@@ -1,0 +1,12 @@
+
+:root {
+    --sem-customFocus: var(--color-indigo-600);
+}
+
+.dark {
+    --sem-customFocus: var(--color-indigo-500);   
+}
+
+@theme inline {
+    --color-customFocus: var(--sem-customFocus);
+}

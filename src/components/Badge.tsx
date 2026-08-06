@@ -5,12 +5,12 @@ interface BadgeProps {
 }
 
 const intentStyles = {
-  info:    'bg-info-surface text-info-content *:fill-info-vivid',
-  danger:  'bg-danger-surface text-danger-content *:fill-danger-vivid',
-  warning: 'bg-warning-surface text-warning-content *:fill-warning-vivid',
-  success: 'bg-success-surface text-success-content *:fill-success-vivid',
-  neutral: 'bg-neutral-surface text-neutral-content *:fill-neutral-vivid',
-  brand: 'bg-brand-surface text-brand-content *:fill-brand-vivid'
+  info:    'bg-info-surface text-info-content *:fill-info-icon',
+  danger:  'bg-danger-surface text-danger-content *:fill-danger-icon',
+  warning: 'bg-warning-surface text-warning-content *:fill-warning-icon',
+  success: 'bg-success-surface text-success-content *:fill-success-icon',
+  neutral: 'bg-neutral-surface text-neutral-content *:fill-neutral-icon',
+  brand: 'bg-brand-surface text-brand-content *:fill-brand-icon'
 }
 
 export const Badge = ({ label = 'Label', intent = 'info', showDot = true }: BadgeProps) => {
