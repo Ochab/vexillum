@@ -1,55 +1,20 @@
 
-export const Badge = () => {
+interface BadgeProps {
+  label?: string
+  intent?: 'default' | 'info' | 'danger' | 'warning' | 'success'
+}
+
+export const Badge = ({ label = 'Label', intent = 'info' }: BadgeProps) => {
   return (
-    <>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-gray-400/10 px-2 py-1 text-xs font-medium text-gray-400">
+      <span 
+        className=" inline-flex items-center gap-x-1.5 rounded-md  px-2 py-1 text-xs font-medium 
+                  bg-gray-100 text-gray-600"
+      >
         <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-gray-400">
           <circle r={3} cx={3} cy={3} />
         </svg>
-        Badge
+        {intent}
+        {label}
       </span>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400">
-        <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-red-400">
-          <circle r={3} cx={3} cy={3} />
-        </svg>
-        Badge
-      </span>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-yellow-400/10 px-2 py-1 text-xs font-medium text-yellow-500">
-        <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-yellow-400">
-          <circle r={3} cx={3} cy={3} />
-        </svg>
-        Badge
-      </span>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-green-400/10 px-2 py-1 text-xs font-medium text-green-400">
-        <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-green-400">
-          <circle r={3} cx={3} cy={3} />
-        </svg>
-        Badge
-      </span>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-blue-400/10 px-2 py-1 text-xs font-medium text-blue-400">
-        <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-blue-400">
-          <circle r={3} cx={3} cy={3} />
-        </svg>
-        Badge
-      </span>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-400/10 px-2 py-1 text-xs font-medium text-indigo-400">
-        <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-indigo-400">
-          <circle r={3} cx={3} cy={3} />
-        </svg>
-        Badge
-      </span>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-purple-400/10 px-2 py-1 text-xs font-medium text-purple-400">
-        <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-purple-400">
-          <circle r={3} cx={3} cy={3} />
-        </svg>
-        Badge
-      </span>
-      <span className="inline-flex items-center gap-x-1.5 rounded-md bg-pink-400/10 px-2 py-1 text-xs font-medium text-pink-400">
-        <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-pink-400">
-          <circle r={3} cx={3} cy={3} />
-        </svg>
-        Badge
-      </span>
-    </>
   )
 }
