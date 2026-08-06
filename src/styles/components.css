@@ -1,34 +1,36 @@
 :root {
-    --button-solid-surface: var(--color-pink-600);
-    --button-solid-surface-hover: var(--color-pink-500);   
-    --button-solid-content: var(--color-pink-400);
-    --button-solid-border: var(transparent);   
+    --comp-button-solid-surface: var(--color-pink-600);
+    --comp-button-solid-surface-hover: var(--color-pink-500);   
+    --comp-button-solid-content: var(--color-pink-400);
+    --comp-button-solid-ring: transparent;   
 
-    --button-outline-surface: var(--color-white);
-    --button-outline-surface-hover: var(--color-gray-50);
-    --button-outline-content: var(--color-gray-900);
-    --button-outline-border: var(--color-gray-300);
+    --comp-button-outline-surface: var(--color-white);
+    --comp-button-outline-surface-hover: var(--color-gray-50);
+    --comp-button-outline-content: var(--color-gray-900);
+    --comp-button-outline-ring: var(--color-gray-300);
 }
 
 .dark {
   color-scheme: dark;
-    --button-solid-surface: val(--color-pink-600);
-    --button-solid-surface-hover: var(--color-pink-500);   
-    --button-solid-content: var(--color-pink-400);
-    --button-solid-border: var(transparent);   
+    --comp-button-solid-surface: var(--color-pink-600);
+    --comp-button-solid-surface-hover: var(--color-pink-500);   
+    --comp-button-solid-content: var(--color-pink-100);
+    --comp-button-solid-ring: transparent;   
     
-    --button-outline-surface: color-mix(in oklch, var(--color-white) 10%, transparent);
-    --button-outline-surface-hover: color-mix(in oklch, var(--color-white) 20%, transparent);
-    --button-outline-content: var(--color-white);
-    --button-outline-border: color-mix(in oklch, var(--color-white) 5%, transparent);
+    --comp-button-outline-surface: color-mix(in oklch, var(--color-white) 10%, transparent);
+    --comp-button-outline-surface-hover: color-mix(in oklch, var(--color-white) 20%, transparent);
+    --comp-button-outline-content: var(--color-white);
+    --comp-button-outline-ring: color-mix(in oklch, var(--color-white) 5%, transparent);
 }
 
 @theme inline {
-    --color-button-solid-surface: var(--sem-brand-surface);
-    --color-button-solid-content: var(--sem-brand-content);
-    --color-button-solid-border: var(--sem-brand-vivid);
+    --color-button-solid-surface: var(--comp-button-solid-surface);
+    --color-button-solid-surface-hover: var(--comp-button-solid-surface-hover );
+    --color-button-solid-content: var(--comp-button-solid-content );
+    --color-button-solid-ring: var(--comp-button-solid-ring);;
 
-    --color-button-outline-surface: var(--sem-neutral-surface);
-    --color-button-outline-content: var(--sem-neutral-content);
-    --color-button-outline-border: var(--sem-neutral-vivid);
+    --color-button-outline-surface: var(--comp-button-outline-surface);
+    --color-button-outline-surface-hover: var(--comp-button-outline-surface-hover );
+    --color-button-outline-content: var(--comp-button-outline-content );
+    --color-button-outline-ring: var(--comp-button-outline-ring);
 }
