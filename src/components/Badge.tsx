@@ -1,4 +1,3 @@
-
 interface BadgeProps {
   label?: string
   intent?: 'info' | 'danger' | 'warning' | 'success' | 'neutral' | 'brand'

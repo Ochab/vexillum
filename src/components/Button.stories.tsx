@@ -4,6 +4,11 @@ import { Button } from './Button';
 
 const meta = {
   component: Button,
+  args: {  
+    label: 'Label',
+    variant: 'solid',
+    size: 'md'
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
