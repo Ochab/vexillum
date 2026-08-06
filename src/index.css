@@ -1,11 +1,20 @@
 @import "tailwindcss";
+@import "./styles/components.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
-html.dark {
-    background-color: #111;
-}
-
 :root {
+    --sem-bg: var(--color-gray-50);
+    --sem-bg-raised: var(--color-white);
+    --sem-fg: var(--color-gray-900);
+    --sem-fg-muted: var(--color-gray-500);
+    --sem-border: var(--color-gray-200);
+    
+    /* Base SEMANTICS */
+
+    --sem-focus: var(--color-indigo-600);
+
+    /* STATUS */
+
     --sem-info-surface: var(--color-blue-100);
     --sem-info-content: var(--color-blue-700);
     --sem-info-vivid: var(--color-blue-500);
@@ -33,6 +42,17 @@ html.dark {
 
 .dark {
   color-scheme: dark;
+    --sem-bg: var(--color-gray-950);
+    --sem-bg-raised: var(--color-gray-900);
+    --sem-fg: var(--color-gray-50);
+    --sem-fg-muted: var(--color-gray-400);
+    --sem-border: var(--color-gray-800);
+
+    /* DARK Base SEMANTICS */
+
+    --sem-focus: var(--color-indigo-500);
+
+    /* DARK STATUS */
 
     --sem-info-surface: color-mix(in oklch, var(--color-blue-400) 10%, transparent);
     --sem-info-content: var(--color-blue-200);
@@ -60,6 +80,18 @@ html.dark {
 }
 
 @theme inline {
+    --color-bg: var(--sem-bg);
+    --color-bg-raised: var(--sem-bg-raised);
+    --color-fg: var(--sem-fg);
+    --color-fg-muted: var(--sem-fg-muted);
+    --color-border: var(--sem-border);
+
+    /* INLINE Base SEMANTICS */
+
+    --color-focus: var(--sem-focus);
+
+    /* INLINE STATUS */
+
     --color-info-surface: var(--sem-info-surface);
     --color-info-content: var(--sem-info-content);
     --color-info-vivid: var(--sem-info-vivid);
@@ -83,4 +115,12 @@ html.dark {
     --color-brand-surface: var(--sem-brand-surface);
     --color-brand-content: var(--sem-brand-content);
     --color-brand-vivid: var(--sem-brand-vivid);
+
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+  }
 }
