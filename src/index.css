@@ -1,7 +1,86 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+html.dark {
+    background-color: #111;
+}
 
-    html.dark {
-        background-color: #111;
-    }
+:root {
+    --sem-info-surface: var(--color-blue-100);
+    --sem-info-content: var(--color-blue-700);
+    --sem-info-vivid: var(--color-blue-500);
+
+    --sem-success-surface: var(--color-green-100);
+    --sem-success-content: var(--color-green-700);
+    --sem-success-vivid: var(--color-green-500);
+
+    --sem-warning-surface: var(--color-amber-100);
+    --sem-warning-content: var(--color-amber-700);
+    --sem-warning-vivid: var(--color-amber-500);
+
+    --sem-danger-surface: var(--color-red-100);
+    --sem-danger-content: var(--color-red-700);
+    --sem-danger-vivid: var(--color-red-500);
+
+    --sem-neutral-surface: var(--color-gray-100);
+    --sem-neutral-content: var(--color-gray-700);
+    --sem-neutral-vivid: var(--color-gray-500);
+
+    --sem-brand-surface: var(--color-indigo-100);
+    --sem-brand-content: var(--color-indigo-700);
+    --sem-brand-vivid: var(--color-indigo-500);
+}
+
+.dark {
+  color-scheme: dark;
+
+    --sem-info-surface: color-mix(in oklch, var(--color-blue-400) 10%, transparent);
+    --sem-info-content: var(--color-blue-200);
+    --sem-info-vivid: var(--color-blue-400);
+
+    --sem-success-surface: color-mix(in oklch, var(--color-green-400) 10%, transparent);
+    --sem-success-content: var(--color-green-200);
+    --sem-success-vivid: var(--color-green-400);
+
+    --sem-warning-surface: color-mix(in oklch, var(--color-amber-400) 10%, transparent);
+    --sem-warning-content: var(--color-amber-200);
+    --sem-warning-vivid: var(--color-amber-400);
+
+    --sem-danger-surface: color-mix(in oklch, var(--color-red-400) 10%, transparent);
+    --sem-danger-content: var(--color-red-100);
+    --sem-danger-vivid: var(--color-red-400);
+
+    --sem-neutral-surface: color-mix(in oklch, var(--color-gray-400) 10%, transparent);
+    --sem-neutral-content: var(--color-gray-200);
+    --sem-neutral-vivid: var(--color-gray-400);
+
+    --sem-brand-surface: color-mix(in oklch, var(--color-indigo-400) 10%, transparent);
+    --sem-brand-content: var(--color-indigo-200);
+    --sem-brand-vivid: var(--color-indigo-400);
+}
+
+@theme inline {
+    --color-info-surface: var(--sem-info-surface);
+    --color-info-content: var(--sem-info-content);
+    --color-info-vivid: var(--sem-info-vivid);
+
+    --color-success-surface: var(--sem-success-surface);
+    --color-success-content: var(--sem-success-content);
+    --color-success-vivid: var(--sem-success-vivid);
+
+    --color-warning-surface: var(--sem-warning-surface);
+    --color-warning-content: var(--sem-warning-content);
+    --color-warning-vivid: var(--sem-warning-vivid);
+
+    --color-danger-surface: var(--sem-danger-surface);
+    --color-danger-content: var(--sem-danger-content);
+    --color-danger-vivid: var(--sem-danger-vivid);
+
+    --color-neutral-surface: var(--sem-neutral-surface);
+    --color-neutral-content: var(--sem-neutral-content);
+    --color-neutral-vivid: var(--sem-neutral-vivid);
+
+    --color-brand-surface: var(--sem-brand-surface);
+    --color-brand-content: var(--sem-brand-content);
+    --color-brand-vivid: var(--sem-brand-vivid);
+}

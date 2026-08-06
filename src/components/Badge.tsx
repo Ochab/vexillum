@@ -1,16 +1,17 @@
 
 interface BadgeProps {
   label?: string
-  intent?: 'info' | 'danger' | 'warning' | 'success' | 'default'
+  intent?: 'info' | 'danger' | 'warning' | 'success' | 'neutral' | 'brand'
   showDot?: boolean
 }
 
 const intentStyles = {
-  default: 'bg-gray-100 text-gray-600 *:fill-gray-400',
-  info:    'bg-blue-100 text-blue-700 *:fill-blue-500',
-  danger:  'bg-red-100 text-red-700 *:fill-red-500',
-  warning: 'bg-amber-100 text-amber-700 *:fill-amber-500',
-  success: 'bg-green-100 text-green-700 *:fill-green-500',
+  info:    'bg-info-surface text-info-content *:fill-info-vivid',
+  danger:  'bg-danger-surface text-danger-content *:fill-danger-vivid',
+  warning: 'bg-warning-surface text-warning-content *:fill-warning-vivid',
+  success: 'bg-success-surface text-success-content *:fill-success-vivid',
+  neutral: 'bg-neutral-surface text-neutral-content *:fill-neutral-vivid',
+  brand: 'bg-brand-surface text-brand-content *:fill-brand-vivid'
 }
 
 export const Badge = ({ label = 'Label', intent = 'info', showDot = true }: BadgeProps) => {
