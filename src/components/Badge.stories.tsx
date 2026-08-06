@@ -4,6 +4,11 @@ import { Badge } from './Badge';
 
 const meta = {
   component: Badge,
+    args: {  
+    label: 'Label',
+    intent: 'info',
+    showDot: true,
+  },
 } satisfies Meta<typeof Badge>;
 
 export default meta;
