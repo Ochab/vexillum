@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 
 import { Button } from './Button';
 
@@ -7,7 +8,8 @@ const meta = {
   args: {  
     label: 'Label',
     variant: 'solid',
-    size: 'md'
+    size: 'md',
+    onClick: fn(),
   },
 } satisfies Meta<typeof Button>;
 

@@ -2,6 +2,7 @@ interface ButtonProps {
   label?: string
   variant?: 'solid' | 'outline'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 const variantStyles = {
@@ -17,11 +18,12 @@ const sizeStyles = {
   xl:  'px-3.5 py-2.5 text-sm',
 }
 
-export const Button = ({ label = 'Label', variant = 'solid', size = 'md' }: ButtonProps) => {
+export const Button = ({ label = 'Label', variant = 'solid', size = 'md', onClick }: ButtonProps) => {
   return (
     <button
       type="button"
       className={`rounded-sm px-3 py-2 text-sm font-semibold shadow-xs dark:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${variantStyles[variant]} ${sizeStyles[size]}`}
+      onClick={onClick}
     >
       {label}
     </button>
