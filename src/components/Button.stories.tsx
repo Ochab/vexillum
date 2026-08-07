@@ -3,7 +3,7 @@ import { fn } from 'storybook/test'
 
 import { Button } from './Button'
 
-const TONES = ['brand', 'accent', 'info', 'success', 'warning', 'danger', 'neutral'] as const
+const TONES = ['brand', 'accent', 'neutral', 'danger', 'success'] as const
 const VARIANTS = ['solid', 'outline', 'soft' ] as const
 const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 

@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from 'react'
 
-type Tone = 'brand' | 'accent' | 'info' | 'success' | 'warning' | 'danger' | 'neutral'
+type Tone = 'brand' | 'accent' | 'neutral' | 'danger' | 'success'
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 /* Outline is the secondary button — neutral chrome, not "solid with a hole
