@@ -1,36 +1,130 @@
-:root {
-    --comp-button-solid-surface: var(--color-pink-600);
-    --comp-button-solid-surface-hover: var(--color-pink-500);   
-    --comp-button-solid-content: var(--color-pink-400);
-    --comp-button-solid-ring: transparent;   
+/* ==========================================================================
+   COMPONENT TOKENS
+   Primitives (--color-*) → Semantics (--sem-*) → Components (--comp-*)
 
-    --comp-button-outline-surface: var(--color-white);
-    --comp-button-outline-surface-hover: var(--color-gray-50);
-    --comp-button-outline-content: var(--color-gray-900);
-    --comp-button-outline-ring: var(--color-gray-300);
+   Tone and variant are independent axes. Rather than declaring every
+   combination, tone sets a generic --tone-* palette and variant decides
+   which slots of that palette to use. Adding a tone = one block.
+   Adding a variant = one block. Not a matrix.
+   ========================================================================== */
+
+@layer components {
+
+    /* ----------------------------------------------------------------------
+       BUTTON — TONE
+       Each block fills the same six slots from a different semantic family.
+       ---------------------------------------------------------------------- */
+
+    .btn,
+    .btn[data-tone='brand'] {
+        --tone-surface:        var(--sem-surface-brand);
+        --tone-surface-hover:  var(--sem-surface-brand-hover);
+        --tone-surface-subtle: var(--sem-surface-brand-subtle);
+        --tone-on:             var(--sem-content-on-brand);
+        --tone-content:        var(--sem-content-brand-strong);
+        --tone-border:         var(--sem-border-brand-strong);
+    }
+
+    .btn[data-tone='accent'] {
+        --tone-surface:        var(--sem-surface-accent);
+        --tone-surface-hover:  var(--sem-surface-accent-hover);
+        --tone-surface-subtle: var(--sem-surface-accent-subtle);
+        --tone-on:             var(--sem-content-on-accent);
+        --tone-content:        var(--sem-content-accent-strong);
+        --tone-border:         var(--sem-border-accent-strong);
+    }
+
+    .btn[data-tone='info'] {
+        --tone-surface:        var(--sem-surface-info);
+        --tone-surface-hover:  var(--sem-surface-info-hover);
+        --tone-surface-subtle: var(--sem-surface-info-subtle);
+        --tone-on:             var(--sem-content-on-info);
+        --tone-content:        var(--sem-content-info-strong);
+        --tone-border:         var(--sem-border-info-strong);
+    }
+
+    .btn[data-tone='success'] {
+        --tone-surface:        var(--sem-surface-success);
+        --tone-surface-hover:  var(--sem-surface-success-hover);
+        --tone-surface-subtle: var(--sem-surface-success-subtle);
+        --tone-on:             var(--sem-content-on-success);
+        --tone-content:        var(--sem-content-success-strong);
+        --tone-border:         var(--sem-border-success-strong);
+    }
+
+    .btn[data-tone='warning'] {
+        --tone-surface:        var(--sem-surface-warning);
+        --tone-surface-hover:  var(--sem-surface-warning-hover);
+        --tone-surface-subtle: var(--sem-surface-warning-subtle);
+        --tone-on:             var(--sem-content-on-warning);
+        --tone-content:        var(--sem-content-warning-strong);
+        --tone-border:         var(--sem-border-warning-strong);
+    }
+
+    .btn[data-tone='danger'] {
+        --tone-surface:        var(--sem-surface-danger);
+        --tone-surface-hover:  var(--sem-surface-danger-hover);
+        --tone-surface-subtle: var(--sem-surface-danger-subtle);
+        --tone-on:             var(--sem-content-on-danger);
+        --tone-content:        var(--sem-content-danger-strong);
+        --tone-border:         var(--sem-border-danger-strong);
+    }
+
+    .btn[data-tone='neutral'] {
+        --tone-surface:        var(--sem-surface-neutral);
+        --tone-surface-hover:  var(--sem-surface-neutral-hover);
+        --tone-surface-subtle: var(--sem-surface-neutral-subtle);
+        --tone-on:             var(--sem-content-on-neutral);
+        --tone-content:        var(--sem-content-neutral-strong);
+        --tone-border:         var(--sem-border-neutral-strong);
+    }
+
+    /* ----------------------------------------------------------------------
+       BUTTON — VARIANT
+       Maps the resolved --tone-* palette onto the button's own tokens.
+       Tone-agnostic: these blocks never name a color family.
+       ---------------------------------------------------------------------- */
+
+    /* solid — default */
+    .btn {
+        --comp-button-surface:       var(--tone-surface);
+        --comp-button-surface-hover: var(--tone-surface-hover);
+        --comp-button-content:       var(--tone-on);
+        --comp-button-ring:          transparent;
+        --comp-button-focus:         var(--sem-focus);
+    }
+
+    .btn[data-variant='outline'] {
+        --comp-button-surface:       transparent;
+        --comp-button-surface-hover: var(--tone-surface-subtle);
+        --comp-button-content:       var(--tone-content);
+        --comp-button-ring:          var(--tone-border);
+    }
+
+    /* ----------------------------------------------------------------------
+       BUTTON — DISABLED
+       Drops tone entirely. A disabled danger button shouldn't read as danger.
+       ---------------------------------------------------------------------- */
+
+    .btn:disabled {
+        --comp-button-surface:       var(--sem-surface-sunken);
+        --comp-button-surface-hover: var(--sem-surface-sunken);
+        --comp-button-content:       var(--sem-content-subtle);
+        --comp-button-ring:          transparent;
+    }
 }
 
-.dark {
-  color-scheme: dark;
-    --comp-button-solid-surface: var(--color-pink-600);
-    --comp-button-solid-surface-hover: var(--color-pink-500);   
-    --comp-button-solid-content: var(--color-pink-100);
-    --comp-button-solid-ring: transparent;   
-    
-    --comp-button-outline-surface: color-mix(in oklch, var(--color-white) 10%, transparent);
-    --comp-button-outline-surface-hover: color-mix(in oklch, var(--color-white) 20%, transparent);
-    --comp-button-outline-content: var(--color-white);
-    --comp-button-outline-ring: color-mix(in oklch, var(--color-white) 5%, transparent);
-}
+
+/* ==========================================================================
+   TAILWIND UTILITIES
+   `inline` keeps the var() chain live so tone, variant, disabled, and dark
+   mode all resolve at runtime rather than being frozen at build time.
+   ========================================================================== */
 
 @theme inline {
-    --color-button-solid-surface: var(--comp-button-solid-surface);
-    --color-button-solid-surface-hover: var(--comp-button-solid-surface-hover );
-    --color-button-solid-content: var(--comp-button-solid-content );
-    --color-button-solid-ring: var(--comp-button-solid-ring);;
-
-    --color-button-outline-surface: var(--comp-button-outline-surface);
-    --color-button-outline-surface-hover: var(--comp-button-outline-surface-hover );
-    --color-button-outline-content: var(--comp-button-outline-content );
-    --color-button-outline-ring: var(--comp-button-outline-ring);
+    --color-button-surface:       var(--comp-button-surface);
+    --color-button-surface-hover: var(--comp-button-surface-hover);
+    --color-button-content:       var(--comp-button-content);
+    --color-button-ring:          var(--comp-button-ring);
+    --color-button-focus:         var(--comp-button-focus);
 }

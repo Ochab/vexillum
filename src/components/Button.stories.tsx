@@ -8,6 +8,7 @@ const meta = {
   args: {  
     label: 'Label',
     variant: 'solid',
+    tone: 'brand',
     size: 'md',
     onClick: fn(),
   },
