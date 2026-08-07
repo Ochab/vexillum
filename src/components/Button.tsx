@@ -7,7 +7,7 @@ import type { ButtonHTMLAttributes } from 'react'
    type Variant = 'solid' | 'outline' | 'soft'
    type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
    */
-export const TONES = ['brand', 'accent', 'info', 'success', 'warning', 'danger', 'neutral'] as const
+export const TONES = ['brand', 'accent', 'success', 'danger', 'neutral'] as const
 export const VARIANTS = ['solid', 'outline', 'soft'] as const
 export const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 

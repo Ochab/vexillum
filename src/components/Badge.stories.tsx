@@ -23,3 +23,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Tones: Story = {
+  parameters: { controls: { include: ['showDot'] } },
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      {TONES.map((tone) => (
+        <Badge key={tone} {...args} tone={tone} label={tone} />
+      ))}
+    </div>
+  )
+}

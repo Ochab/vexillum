@@ -5,7 +5,7 @@ import type { HTMLAttributes } from 'react'
    To remove exporting, all you need to keep is the following line:
    type Tone = 'info' | 'success' | 'warning' | 'danger' | 'neutral' | 'brand' | 'accent'
    */
-export const TONES = ['brand', 'accent', 'info', 'success', 'warning', 'danger', 'neutral'] as const
+export const TONES = [ 'success', 'info', 'warning', 'danger', 'neutral', 'brand', 'accent'] as const
 export type Tone = typeof TONES[number]
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
