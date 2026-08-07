@@ -6,7 +6,7 @@ const meta = {
   component: Badge,
     args: {  
     label: 'Label',
-    intent: 'info',
+    tone: 'info',
     showDot: true,
   },
 } satisfies Meta<typeof Badge>;

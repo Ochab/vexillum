@@ -131,7 +131,7 @@
 .dark {
     /* SURFACE — BASE */
     --sem-surface:                     var(--color-gray-900);
-    --sem-surface-raised:              var(--color-gray-800);
+    --sem-surface-raised:               color-mix(in oklch, var(--color-gray-800) 50%, transparent);
     --sem-surface-raised-hover:        var(--color-gray-700);
     --sem-surface-sunken:              var(--color-gray-950);
     --sem-surface-overlay:             color-mix(in oklab, var(--color-gray-950) 70%, transparent);

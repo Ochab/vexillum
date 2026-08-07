@@ -1,32 +1,22 @@
 @import "tailwindcss";
+@import "./styles/primitives.css";
 @import "./styles/semantics.css";
-@import "./styles/alerts.css";
 @import "./styles/components.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-    --sem-bg: var(--color-gray-50);
-    --sem-bg-raised: var(--color-white);
+    --sem-bg: var(--color-white);
     --sem-fg: var(--color-gray-900);
-    --sem-fg-muted: var(--color-gray-500);
-    --sem-border: var(--color-gray-200);
 }
 
 .dark {
-    --sem-bg: var(--color-gray-950);
-    --sem-bg-raised: var(--color-gray-900);
+    --sem-bg: var(--color-gray-900);
     --sem-fg: var(--color-gray-50);
-    --sem-fg-muted: var(--color-gray-400);
-    --sem-border: var(--color-gray-800);
 }
 
 @theme inline {
     --color-bg: var(--sem-bg);
-    --color-bg-raised: var(--sem-bg-raised);
     --color-fg: var(--sem-fg);
-    --color-fg-muted: var(--sem-fg-muted);
-    --color-border: var(--sem-border);
-
 }
 
 @layer base {

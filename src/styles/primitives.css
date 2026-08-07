@@ -1,0 +1,15 @@
+/* primitives.css — raw values. No `inline` here: these are static hex,
+   nothing to resolve at runtime. */
+@theme {
+--color-coral-50:  oklch(97.52% 0.014 29.9);
+--color-coral-100: oklch(93.95% 0.035 30.2);
+--color-coral-200: oklch(88.11% 0.070 29.3);
+--color-coral-300: oklch(81.35% 0.113 29.1);
+--color-coral-400: oklch(73.57% 0.160 29.2);
+--color-coral-500: oklch(67.67% 0.188 28.7);
+--color-coral-600: oklch(60.97% 0.194 28.7);
+--color-coral-700: oklch(53.19% 0.172 27.9);
+--color-coral-800: oklch(46.75% 0.143 26.9);
+--color-coral-900: oklch(41.94% 0.116 26.4);
+--color-coral-950: oklch(27.27% 0.077 27.8);
+}

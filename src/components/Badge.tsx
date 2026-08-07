@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react'
 
-type Tone = 'brand' | 'accent' | 'info' | 'success' | 'warning' | 'danger' | 'neutral'
+type Tone = 'info' | 'success' | 'warning' | 'danger' | 'neutral' | 'brand' | 'accent' 
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   label?: string
