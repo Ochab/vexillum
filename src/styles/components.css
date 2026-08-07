@@ -2,90 +2,108 @@
    COMPONENT TOKENS
    Primitives (--color-*) → Semantics (--sem-*) → Components (--comp-*)
 
-   Tone and variant are independent axes. Rather than declaring every
-   combination, tone sets a generic --tone-* palette and variant decides
-   which slots of that palette to use. Adding a tone = one block.
-   Adding a variant = one block. Not a matrix.
+   Every component gets a selector-hook class (.btn, .badge) plus data
+   attributes. The class paints nothing — it exists so these rules have
+   something to match on. The corresponding .tsx must keep that class in
+   its base string or none of this applies.
+
+   Components with two axes (button: tone × variant) route tone through a
+   generic --tone-* palette that variant then maps onto --comp-*. That keeps
+   it additive rather than a matrix. Single-axis components (badge) set
+   --comp-* directly — the indirection would buy nothing.
    ========================================================================== */
 
 @layer components {
 
+    /* ======================================================================
+       BUTTON
+       ====================================================================== */
+
     /* ----------------------------------------------------------------------
        BUTTON — TONE
-       Each block fills the same six slots from a different semantic family.
+       Each block fills the same seven slots from a different semantic family.
+       Consumed by solid and soft. Outline mostly ignores it.
        ---------------------------------------------------------------------- */
 
     .btn,
     .btn[data-tone='brand'] {
-        --tone-surface:        var(--sem-surface-brand);
-        --tone-surface-hover:  var(--sem-surface-brand-hover);
-        --tone-surface-subtle: var(--sem-surface-brand-subtle);
-        --tone-on:             var(--sem-content-on-brand);
-        --tone-content:        var(--sem-content-brand-strong);
-        --tone-border:         var(--sem-border-brand-strong);
+        --tone-surface:            var(--sem-surface-brand);
+        --tone-surface-hover:      var(--sem-surface-brand-hover);
+        --tone-surface-soft:       var(--sem-surface-brand-soft);
+        --tone-surface-soft-hover: var(--sem-surface-brand-soft-hover);
+        --tone-on:                 var(--sem-content-on-brand);
+        --tone-content:            var(--sem-content-brand-strong);
+        --tone-border:             var(--sem-border-brand-strong);
     }
 
     .btn[data-tone='accent'] {
-        --tone-surface:        var(--sem-surface-accent);
-        --tone-surface-hover:  var(--sem-surface-accent-hover);
-        --tone-surface-subtle: var(--sem-surface-accent-subtle);
-        --tone-on:             var(--sem-content-on-accent);
-        --tone-content:        var(--sem-content-accent-strong);
-        --tone-border:         var(--sem-border-accent-strong);
+        --tone-surface:            var(--sem-surface-accent);
+        --tone-surface-hover:      var(--sem-surface-accent-hover);
+        --tone-surface-soft:       var(--sem-surface-accent-soft);
+        --tone-surface-soft-hover: var(--sem-surface-accent-soft-hover);
+        --tone-on:                 var(--sem-content-on-accent);
+        --tone-content:            var(--sem-content-accent-strong);
+        --tone-border:             var(--sem-border-accent-strong);
     }
 
     .btn[data-tone='info'] {
-        --tone-surface:        var(--sem-surface-info);
-        --tone-surface-hover:  var(--sem-surface-info-hover);
-        --tone-surface-subtle: var(--sem-surface-info-subtle);
-        --tone-on:             var(--sem-content-on-info);
-        --tone-content:        var(--sem-content-info-strong);
-        --tone-border:         var(--sem-border-info-strong);
+        --tone-surface:            var(--sem-surface-info);
+        --tone-surface-hover:      var(--sem-surface-info-hover);
+        --tone-surface-soft:       var(--sem-surface-info-soft);
+        --tone-surface-soft-hover: var(--sem-surface-info-soft-hover);
+        --tone-on:                 var(--sem-content-on-info);
+        --tone-content:            var(--sem-content-info-strong);
+        --tone-border:             var(--sem-border-info-strong);
     }
 
     .btn[data-tone='success'] {
-        --tone-surface:        var(--sem-surface-success);
-        --tone-surface-hover:  var(--sem-surface-success-hover);
-        --tone-surface-subtle: var(--sem-surface-success-subtle);
-        --tone-on:             var(--sem-content-on-success);
-        --tone-content:        var(--sem-content-success-strong);
-        --tone-border:         var(--sem-border-success-strong);
+        --tone-surface:            var(--sem-surface-success);
+        --tone-surface-hover:      var(--sem-surface-success-hover);
+        --tone-surface-soft:       var(--sem-surface-success-soft);
+        --tone-surface-soft-hover: var(--sem-surface-success-soft-hover);
+        --tone-on:                 var(--sem-content-on-success);
+        --tone-content:            var(--sem-content-success-strong);
+        --tone-border:             var(--sem-border-success-strong);
     }
 
     .btn[data-tone='warning'] {
-        --tone-surface:        var(--sem-surface-warning);
-        --tone-surface-hover:  var(--sem-surface-warning-hover);
-        --tone-surface-subtle: var(--sem-surface-warning-subtle);
-        --tone-on:             var(--sem-content-on-warning);
-        --tone-content:        var(--sem-content-warning-strong);
-        --tone-border:         var(--sem-border-warning-strong);
+        --tone-surface:            var(--sem-surface-warning);
+        --tone-surface-hover:      var(--sem-surface-warning-hover);
+        --tone-surface-soft:       var(--sem-surface-warning-soft);
+        --tone-surface-soft-hover: var(--sem-surface-warning-soft-hover);
+        --tone-on:                 var(--sem-content-on-warning);
+        --tone-content:            var(--sem-content-warning-strong);
+        --tone-border:             var(--sem-border-warning-strong);
     }
 
     .btn[data-tone='danger'] {
-        --tone-surface:        var(--sem-surface-danger);
-        --tone-surface-hover:  var(--sem-surface-danger-hover);
-        --tone-surface-subtle: var(--sem-surface-danger-subtle);
-        --tone-on:             var(--sem-content-on-danger);
-        --tone-content:        var(--sem-content-danger-strong);
-        --tone-border:         var(--sem-border-danger-strong);
+        --tone-surface:            var(--sem-surface-danger);
+        --tone-surface-hover:      var(--sem-surface-danger-hover);
+        --tone-surface-soft:       var(--sem-surface-danger-soft);
+        --tone-surface-soft-hover: var(--sem-surface-danger-soft-hover);
+        --tone-on:                 var(--sem-content-on-danger);
+        --tone-content:            var(--sem-content-danger-strong);
+        --tone-border:             var(--sem-border-danger-strong);
     }
 
     .btn[data-tone='neutral'] {
-        --tone-surface:        var(--sem-surface-neutral);
-        --tone-surface-hover:  var(--sem-surface-neutral-hover);
-        --tone-surface-subtle: var(--sem-surface-neutral-subtle);
-        --tone-on:             var(--sem-content-on-neutral);
-        --tone-content:        var(--sem-content-neutral-strong);
-        --tone-border:         var(--sem-border-neutral-strong);
+        --tone-surface:            var(--sem-surface-neutral);
+        --tone-surface-hover:      var(--sem-surface-neutral-hover);
+        --tone-surface-soft:       var(--sem-surface-neutral-soft);
+        --tone-surface-soft-hover: var(--sem-surface-neutral-soft-hover);
+        --tone-on:                 var(--sem-content-on-neutral);
+        --tone-content:            var(--sem-content-neutral-strong);
+        --tone-border:             var(--sem-border-neutral-strong);
     }
 
     /* ----------------------------------------------------------------------
        BUTTON — VARIANT
        Maps the resolved --tone-* palette onto the button's own tokens.
-       Tone-agnostic: these blocks never name a color family.
+       Order matters below: :disabled ties on specificity with the variant
+       blocks (0,2,0) and only wins by being later in the file. Don't move it.
        ---------------------------------------------------------------------- */
 
-    /* solid — default */
+    /* solid — default. The primary action. */
     .btn {
         --comp-button-surface:       var(--tone-surface);
         --comp-button-surface-hover: var(--tone-surface-hover);
@@ -94,9 +112,28 @@
         --comp-button-focus:         var(--sem-focus);
     }
 
+    /* soft — tinted, low-emphasis. Still tone-carrying. */
+    .btn[data-variant='soft'] {
+        --comp-button-surface:       var(--tone-surface-soft);
+        --comp-button-surface-hover: var(--tone-surface-soft-hover);
+        --comp-button-content:       var(--tone-content);
+        --comp-button-ring:          transparent;
+    }
+
+    /* outline — the SECONDARY button, not "solid with a hole in it".
+       Deliberately tone-free: neutral chrome regardless of context.
+       Types restrict tone to 'neutral' | 'danger' for this variant. */
     .btn[data-variant='outline'] {
-        --comp-button-surface:       transparent;
-        --comp-button-surface-hover: var(--tone-surface-subtle);
+        --comp-button-surface:       var(--sem-surface-ghost);
+        --comp-button-surface-hover: var(--sem-surface-ghost-hover);
+        --comp-button-content:       var(--sem-content);
+        --comp-button-ring:          var(--sem-border-ghost);
+    }
+
+    /* The one tone outline honours. Destructive secondary actions need to
+       read as destructive. Surface stays neutral — only text and ring go red. */
+    .btn[data-variant='outline'][data-tone='danger'] {
+        --comp-button-surface-hover: var(--tone-surface-soft-hover);
         --comp-button-content:       var(--tone-content);
         --comp-button-ring:          var(--tone-border);
     }
@@ -104,6 +141,7 @@
     /* ----------------------------------------------------------------------
        BUTTON — DISABLED
        Drops tone entirely. A disabled danger button shouldn't read as danger.
+       Must stay last: see the ordering note above.
        ---------------------------------------------------------------------- */
 
     .btn:disabled {
@@ -111,6 +149,65 @@
         --comp-button-surface-hover: var(--sem-surface-sunken);
         --comp-button-content:       var(--sem-content-subtle);
         --comp-button-ring:          transparent;
+    }
+
+
+    /* ======================================================================
+       BADGE
+       Single axis, so tone sets --comp-badge-* directly. No --tone-* hop.
+       Going direct also avoids inheriting --tone-* from an ancestor .btn
+       when a badge is nested inside a button.
+
+       Three slots, three deliberately different semantic steps:
+         surface  -subtle, the STATIC tint. NOT -soft — that tier is for
+                  interactive surfaces and sits a step lighter in light mode.
+         content  -strong, the 4.5:1 step. Badge text is small.
+         dot      base, the 3:1 step. Non-text, so 1.4.11 is the right bar,
+                  and a step lighter than the text stops it reading as
+                  punctuation.
+       ====================================================================== */
+
+    .badge,
+    .badge[data-tone='neutral'] {
+        --comp-badge-surface: var(--sem-surface-neutral-subtle);
+        --comp-badge-content: var(--sem-content-neutral-strong);
+        --comp-badge-dot:     var(--sem-content-neutral);
+    }
+
+    .badge[data-tone='brand'] {
+        --comp-badge-surface: var(--sem-surface-brand-subtle);
+        --comp-badge-content: var(--sem-content-brand-strong);
+        --comp-badge-dot:     var(--sem-content-brand);
+    }
+
+    .badge[data-tone='accent'] {
+        --comp-badge-surface: var(--sem-surface-accent-subtle);
+        --comp-badge-content: var(--sem-content-accent-strong);
+        --comp-badge-dot:     var(--sem-content-accent);
+    }
+
+    .badge[data-tone='info'] {
+        --comp-badge-surface: var(--sem-surface-info-subtle);
+        --comp-badge-content: var(--sem-content-info-strong);
+        --comp-badge-dot:     var(--sem-content-info);
+    }
+
+    .badge[data-tone='success'] {
+        --comp-badge-surface: var(--sem-surface-success-subtle);
+        --comp-badge-content: var(--sem-content-success-strong);
+        --comp-badge-dot:     var(--sem-content-success);
+    }
+
+    .badge[data-tone='warning'] {
+        --comp-badge-surface: var(--sem-surface-warning-subtle);
+        --comp-badge-content: var(--sem-content-warning-strong);
+        --comp-badge-dot:     var(--sem-content-warning);
+    }
+
+    .badge[data-tone='danger'] {
+        --comp-badge-surface: var(--sem-surface-danger-subtle);
+        --comp-badge-content: var(--sem-content-danger-strong);
+        --comp-badge-dot:     var(--sem-content-danger);
     }
 }
 
@@ -122,9 +219,15 @@
    ========================================================================== */
 
 @theme inline {
+    /* BUTTON */
     --color-button-surface:       var(--comp-button-surface);
     --color-button-surface-hover: var(--comp-button-surface-hover);
     --color-button-content:       var(--comp-button-content);
     --color-button-ring:          var(--comp-button-ring);
     --color-button-focus:         var(--comp-button-focus);
+
+    /* BADGE */
+    --color-badge-surface:        var(--comp-badge-surface);
+    --color-badge-content:        var(--comp-badge-content);
+    --color-badge-dot:            var(--comp-badge-dot);
 }

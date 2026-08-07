@@ -1,24 +1,33 @@
 import type { ButtonHTMLAttributes } from 'react'
 
 type Tone = 'brand' | 'accent' | 'info' | 'success' | 'warning' | 'danger' | 'neutral'
-type Variant = 'solid' | 'outline'
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+/* Outline is the secondary button — neutral chrome, not "solid with a hole
+   in it". Danger is the one exception: destructive secondary actions need to
+   read as destructive. Everything else would render gray anyway, so the type
+   rejects it rather than failing silently at runtime. */
+type OutlineTone = 'neutral' | 'danger'
+
+type BaseProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   label?: string
-  variant?: Variant
-  tone?: Tone
   size?: Size
 }
 
+type ButtonProps = BaseProps &
+  (
+    | { variant?: 'solid' | 'soft'; tone?: Tone }
+    | { variant: 'outline'; tone?: OutlineTone }
+  )
+
 /* Colors live in components.css, switched by data-tone / data-variant.
-   Only size varies here — it has no CSS-side dependencies. */
+   Size carries radius too — the scale steps up at md, matching the reference. */
 const sizeStyles: Record<Size, string> = {
-  xs: 'px-2 py-1 text-xs',
-  sm: 'px-2 py-1 text-sm',
-  md: 'px-2.5 py-1.5 text-sm',
-  lg: 'px-3 py-2 text-sm',
-  xl: 'px-3.5 py-2.5 text-sm',
+  xs: 'rounded-sm px-2 py-1 text-xs',
+  sm: 'rounded-sm px-2 py-1 text-sm',
+  md: 'rounded-md px-2.5 py-1.5 text-sm',
+  lg: 'rounded-md px-3 py-2 text-sm',
+  xl: 'rounded-md px-3.5 py-2.5 text-sm',
 }
 
 const baseStyles = [
@@ -27,11 +36,12 @@ const baseStyles = [
   // resolve to nothing.
   'btn',
 
-  // Shape. Flat in dark mode: shadows read as grime on dark surfaces.
-  'rounded-sm font-semibold shadow-xs dark:shadow-none',
+  // Radius is in sizeStyles, not here — it varies by size.
+  'font-semibold shadow-xs dark:shadow-none',
 
-  // Border drawn inward, so solid and outline have identical box dimensions.
-  // Solid sets --comp-button-ring to transparent rather than removing the ring.
+  // Border drawn inward, so all three variants have identical box dimensions.
+  // Solid and soft set --comp-button-ring to transparent rather than
+  // removing the ring, so nothing shifts between variants.
   'inset-ring-1 inset-ring-button-ring',
 
   // The four painted colors. All resolve through the tone → variant chain
@@ -53,18 +63,24 @@ const baseStyles = [
 export const Button = ({
   label = 'Label',
   variant = 'solid',
-  tone = 'brand',
+  tone,
   size = 'md',
   className = '',
   ...rest
-}: ButtonProps) => (
-  <button
-    type="button"
-    data-variant={variant}
-    data-tone={tone}
-    className={`${baseStyles} ${sizeStyles[size]} ${className}`}
-    {...rest}
-  >
-    {label}
-  </button>
-)
+}: ButtonProps) => {
+  // Outline defaults to neutral, everything else to brand. Defaulting outline
+  // to 'brand' would put a misleading data-tone on an element that renders gray.
+  const resolvedTone = tone ?? (variant === 'outline' ? 'neutral' : 'brand')
+
+  return (
+    <button
+      type="button"
+      data-variant={variant}
+      data-tone={resolvedTone}
+      className={`${baseStyles} ${sizeStyles[size]} ${className}`}
+      {...rest}
+    >
+      {label}
+    </button>
+  )
+}

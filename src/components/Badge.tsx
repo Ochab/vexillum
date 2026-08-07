@@ -1,29 +1,42 @@
-interface BadgeProps {
+import type { HTMLAttributes } from 'react'
+
+type Tone = 'brand' | 'accent' | 'info' | 'success' | 'warning' | 'danger' | 'neutral'
+
+interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   label?: string
-  intent?: 'info' | 'danger' | 'warning' | 'success' | 'neutral' | 'brand'
+  tone?: Tone
   showDot?: boolean
 }
 
-const intentStyles = {
-  info:    'bg-info-surface text-info-content *:fill-info-icon',
-  danger:  'bg-danger-surface text-danger-content *:fill-danger-icon',
-  warning: 'bg-warning-surface text-warning-content *:fill-warning-icon',
-  success: 'bg-success-surface text-success-content *:fill-success-icon',
-  neutral: 'bg-neutral-surface text-neutral-content *:fill-neutral-icon',
-  brand: 'bg-brand-surface text-brand-content *:fill-brand-icon'
-}
+const baseStyles = [
+  // CSS hook. components.css scopes every tone rule to .badge — without this,
+  // --comp-badge-* is never defined and the utilities below resolve to nothing.
+  'badge',
 
-export const Badge = ({ label = 'Label', intent = 'info', showDot = true }: BadgeProps) => {
-  return (
-      <span 
-        className={`inline-flex items-center gap-x-1.5 rounded-md px-2 py-1 text-xs font-medium ${intentStyles[intent]}`}
-      >
-        {showDot && (
-          <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-current">
-            <circle r={3} cx={3} cy={3} />
-          </svg>
-        )}
-        {label}
-      </span>
-  )
-}
+  // Layout and shape. No tone in here — the class string is identical for
+  // every badge; only data-tone varies.
+  'inline-flex items-center gap-x-1.5 rounded-md px-2 py-1 text-xs font-medium',
+
+  // The two painted colors. Both resolve through the tone chain in
+  // components.css, so neither names a color family here.
+  'bg-badge-surface text-badge-content',
+].join(' ')
+
+export const Badge = ({
+  label = 'Label',
+  tone = 'neutral',
+  showDot = true,
+  className = '',
+  ...rest
+}: BadgeProps) => (
+  <span className={`${baseStyles} ${className}`} data-tone={tone} {...rest}>
+    {showDot && (
+      // Dot is a step lighter than the text — see the BADGE notes in
+      // components.css for why they aren't the same token.
+      <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-badge-dot">
+        <circle r={3} cx={3} cy={3} />
+      </svg>
+    )}
+    {label}
+  </span>
+)
