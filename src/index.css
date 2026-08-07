@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles/semantics.css";
+@import "./styles/alerts.css";
 @import "./styles/components.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -9,84 +10,14 @@
     --sem-fg: var(--color-gray-900);
     --sem-fg-muted: var(--color-gray-500);
     --sem-border: var(--color-gray-200);
-    
-
-
-
-    /* SURFACE */
-
-    --sem-surface: var(--color-gray-100);
-    --sem-surface-raised: var(--color-gray-50);
-    --sem-surface-sunken: var(--color-gray-200);
-
-    --sem-content: var(--color-gray-950);
-    --sem-content-muted: var(--color-gray-500)
-    ;
-
-    /* BRAND */
-
-
-    /* STATUS */
-
-    --sem-info-surface: var(--color-blue-100);
-    --sem-info-content: var(--color-blue-700);
-    --sem-info-icon: var(--color-blue-500);
-
-    --sem-success-surface: var(--color-green-100);
-    --sem-success-content: var(--color-green-700);
-    --sem-success-icon: var(--color-green-500);
-
-    --sem-warning-surface: var(--color-amber-100);
-    --sem-warning-content: var(--color-amber-700);
-    --sem-warning-icon: var(--color-amber-500);
-
-    --sem-danger-surface: var(--color-red-100);
-    --sem-danger-content: var(--color-red-700);
-    --sem-danger-icon: var(--color-red-500);
-
-    --sem-neutral-surface: var(--color-gray-100);
-    --sem-neutral-content: var(--color-gray-700);
-    --sem-neutral-icon: var(--color-gray-500);
-
-    --sem-brand-surface: var(--color-indigo-100);
-    --sem-brand-content: var(--color-indigo-700);
-    --sem-brand-icon: var(--color-indigo-500);
 }
 
 .dark {
-  color-scheme: dark;
     --sem-bg: var(--color-gray-950);
     --sem-bg-raised: var(--color-gray-900);
     --sem-fg: var(--color-gray-50);
     --sem-fg-muted: var(--color-gray-400);
     --sem-border: var(--color-gray-800);
-
-
-    /* DARK STATUS */
-
-    --sem-info-surface: color-mix(in oklch, var(--color-blue-400) 10%, transparent);
-    --sem-info-content: var(--color-blue-200);
-    --sem-info-icon: var(--color-blue-400);
-
-    --sem-success-surface: color-mix(in oklch, var(--color-green-400) 10%, transparent);
-    --sem-success-content: var(--color-green-200);
-    --sem-success-icon: var(--color-green-400);
-
-    --sem-warning-surface: color-mix(in oklch, var(--color-amber-400) 10%, transparent);
-    --sem-warning-content: var(--color-amber-200);
-    --sem-warning-icon: var(--color-amber-400);
-
-    --sem-danger-surface: color-mix(in oklch, var(--color-red-400) 10%, transparent);
-    --sem-danger-content: var(--color-red-100);
-    --sem-danger-icon: var(--color-red-400);
-
-    --sem-neutral-surface: color-mix(in oklch, var(--color-gray-400) 10%, transparent);
-    --sem-neutral-content: var(--color-gray-200);
-    --sem-neutral-icon: var(--color-gray-400);
-
-    --sem-brand-surface: color-mix(in oklch, var(--color-indigo-400) 10%, transparent);
-    --sem-brand-content: var(--color-indigo-200);
-    --sem-brand-icon: var(--color-indigo-400);
 }
 
 @theme inline {
@@ -95,36 +26,6 @@
     --color-fg: var(--sem-fg);
     --color-fg-muted: var(--sem-fg-muted);
     --color-border: var(--sem-border);
-
-    /* INLINE Base SEMANTICS */
-
-    --color-focus: var(--sem-focus);
-
-    /* INLINE STATUS */
-
-    --color-info-surface: var(--sem-info-surface);
-    --color-info-content: var(--sem-info-content);
-    --color-info-icon: var(--sem-info-icon);
-
-    --color-success-surface: var(--sem-success-surface);
-    --color-success-content: var(--sem-success-content);
-    --color-success-icon: var(--sem-success-icon);
-
-    --color-warning-surface: var(--sem-warning-surface);
-    --color-warning-content: var(--sem-warning-content);
-    --color-warning-icon: var(--sem-warning-icon);
-
-    --color-danger-surface: var(--sem-danger-surface);
-    --color-danger-content: var(--sem-danger-content);
-    --color-danger-icon: var(--sem-danger-icon);
-
-    --color-neutral-surface: var(--sem-neutral-surface);
-    --color-neutral-content: var(--sem-neutral-content);
-    --color-neutral-icon: var(--sem-neutral-icon);
-
-    --color-brand-surface: var(--sem-brand-surface);
-    --color-brand-content: var(--sem-brand-content);
-    --color-brand-icon: var(--sem-brand-icon);
 
 }
 
