@@ -1,7 +1,19 @@
 import type { ButtonHTMLAttributes } from 'react'
 
-type Tone = 'brand' | 'accent' | 'neutral' | 'danger' | 'success'
-type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+/* Exported so Storybook can build its dropdowns from these lists.
+   Add a value here and the type, controls, and stories all update.
+   To remove exporting, all you need to keep is the following:
+   type Tone = 'brand' | 'accent' | 'info' | 'success' | 'warning' | 'danger' | 'neutral'
+   type Variant = 'solid' | 'outline' | 'soft'
+   type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+   */
+export const TONES = ['brand', 'accent', 'info', 'success', 'warning', 'danger', 'neutral'] as const
+export const VARIANTS = ['solid', 'outline', 'soft'] as const
+export const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+
+export type Tone = typeof TONES[number]
+export type Variant = typeof VARIANTS[number]
+export type Size = typeof SIZES[number]
 
 /* Outline is the secondary button — neutral chrome, not "solid with a hole
    in it". Danger is the one exception: destructive secondary actions need to
@@ -39,25 +51,30 @@ const baseStyles = [
   // Radius is in sizeStyles, not here — it varies by size.
   'font-semibold shadow-xs dark:shadow-none',
 
-  // Border drawn inward, so all three variants have identical box dimensions.
+  // Border 
+  // The border is drawn inward, so all three variants have identical box dimensions.
   // Solid and soft set --comp-button-ring to transparent rather than
   // removing the ring, so nothing shifts between variants.
   'inset-ring-1 inset-ring-button-ring',
 
-  // The four painted colors. All resolve through the tone → variant chain
-  // in components.css, so none of them name a color here.
+  // States
+  // Default, hover and active.
   'bg-button-surface text-button-content',
   'hover:bg-button-surface-hover',
+  'active:bg-button-surface-active',
 
-  // Keyboard focus only — no ring on mouse click.
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-button-focus',
-
+  // Disabled
   // Disabled colors come from .btn:disabled in components.css; these are
   // just the non-color parts.
   'disabled:cursor-not-allowed disabled:shadow-none',
 
+  // Focus
+  // Keyboard focus only — no ring on mouse click.
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-button-focus',
+
+  // Transitions
   // Colors only. Avoids animating layout properties.
-  'transition-colors',
+  'transition-colors active:duration-0',
 ].join(' ')
 
 export const Button = ({

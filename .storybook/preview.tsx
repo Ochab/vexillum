@@ -14,17 +14,18 @@ const preview: Preview = {
   parameters: {
     controls: {
       matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
+        color: /(background|color)$/i,
+        date: /Date$/i,
       },
+      sort: 'none',
     },
 
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
+      // 'todo'  - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: 'todo'
-    }
+      // 'off'   - skip a11y checks entirely
+      test: 'todo',
+    },
   },
 };
 

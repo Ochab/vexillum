@@ -1,11 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { fn } from 'storybook/test'
-
-import { Button } from './Button'
-
-const TONES = ['brand', 'accent', 'neutral', 'danger', 'success'] as const
-const VARIANTS = ['solid', 'outline', 'soft' ] as const
-const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+import { Button, TONES, VARIANTS, SIZES } from './Button'
 
 const meta = {
   component: Button,
@@ -14,12 +9,12 @@ const meta = {
     variant: 'solid',
     tone: 'brand',
     size: 'md',
+    disabled: false,
     onClick: fn(),
   },
   argTypes: {
-    // Declared explicitly: variant and tone live in a discriminated union,
-    // which react-docgen flattens to `string`. Without these they render
-    // as text inputs.
+    // Storybook can't infer these from the union type — without them it
+    // renders text fields instead of dropdowns. Lists import from Button.tsx.
     variant: { control: 'select', options: VARIANTS },
     tone: { control: 'select', options: TONES },
     size: { control: 'inline-radio', options: SIZES },
@@ -68,6 +63,19 @@ export const Sizes: Story = {
       {SIZES.map((size) => (
         <Button key={size} {...args} size={size} label={size} />
       ))}
+    </div>
+  ),
+}
+
+export const States: Story = {
+  parameters: { controls: { include: ['tone', 'variant'] } },
+  render: (args) => (
+    <div className="flex items-center gap-3">
+      <Button {...args} label="rest" />
+      <Button {...args} label="hover" className="pseudo-hover" />
+      <Button {...args} label="active" className="pseudo-active" />
+      <Button {...args} label="focus" className="pseudo-focus-visible" />
+      <Button {...args} label="disabled" disabled />
     </div>
   ),
 }

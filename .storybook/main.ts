@@ -10,7 +10,8 @@ const config: StorybookConfig = {
     '@storybook/addon-themes',
     "@storybook/addon-a11y",
     "@storybook/addon-docs",
-    "@storybook/addon-onboarding"
+    "@storybook/addon-onboarding",
+    "storybook-addon-pseudo-states"
   ],
   "framework": "@storybook/react-vite"
 };

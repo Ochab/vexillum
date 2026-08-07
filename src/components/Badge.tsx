@@ -1,6 +1,12 @@
 import type { HTMLAttributes } from 'react'
 
-type Tone = 'info' | 'success' | 'warning' | 'danger' | 'neutral' | 'brand' | 'accent' 
+/* Exported so Storybook can build its dropdown from this list.
+   Add a tone here and the type, controls, and stories all update. 
+   To remove exporting, all you need to keep is the following line:
+   type Tone = 'info' | 'success' | 'warning' | 'danger' | 'neutral' | 'brand' | 'accent'
+   */
+export const TONES = ['brand', 'accent', 'info', 'success', 'warning', 'danger', 'neutral'] as const
+export type Tone = typeof TONES[number]
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   label?: string

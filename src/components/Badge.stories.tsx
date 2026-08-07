@@ -1,15 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { Badge } from './Badge';
+import { Badge, TONES } from './Badge';
 
 const meta = {
   component: Badge,
-    args: {  
+  args: {
     label: 'Label',
     tone: 'info',
     showDot: true,
   },
-} satisfies Meta<typeof Badge>;
+  argTypes: {
+    // Renders tone as a dropdown instead of a text field. TONES imports from Badge.tsx.
+    tone: { control: 'select', options: TONES },
+  },
+  parameters: {
+    // HTMLAttributes drags in className and every DOM handler.
+    controls: { include: ['label', 'tone', 'showDot'] },
+  },
+} satisfies Meta<typeof Badge>
 
 export default meta;
 
