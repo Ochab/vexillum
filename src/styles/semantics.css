@@ -2,234 +2,294 @@
    SEMANTIC TOKENS
    Primitives (--color-*) → Semantics (--sem-*) → Components (--comp-*)
 
-   Two tinted surface tiers, because interactive and static needs diverge:
-     -soft    interactive tinted surfaces (soft buttons). Has a hover.
-     -subtle  static status backgrounds (badges, toasts, callouts). No hover.
-   They are NOT the same value. In light mode soft is lighter than subtle;
-   in dark mode soft is heavier. Don't collapse them.
+   SURFACE TIERS
+     (base)   solid fill. Always carries WHITE text.
+     -soft    interactive tinted surface (soft buttons). Has hover + active.
+     -subtle  static status background (badges, toasts). No states.
+   -soft and -subtle are NOT the same value. Light mode: soft is lighter.
+   Dark mode: soft is heavier. Don't collapse them.
+
+   SOLID SURFACE CONTRAST — read before changing any base value
+   Button labels are 14px semibold, which is NOT "large text" under WCAG, so
+   they need 4.5:1. Each tone's REST value is the lightest step on its ramp
+   where white clears that bar:
+     indigo 600 · gray 600 · blue 600 · red 600 · coral 650 · green 700 · amber 700
+   Dark mode lightens only brand and neutral; the rest are already at their
+   floor and inherit unchanged, because the requirement is about white-on-fill
+   and doesn't care what the page behind the button is doing.
+
+   STATE DIRECTION
+     hover  → 10% white mixed in (lighter)
+     active → next ramp step (darker)
+   KNOWN TRADE-OFF: because rest already sits at the contrast floor, the
+   hover fill lands between 3.8:1 and 4.3:1 for most tones — under AA. This
+   is a deliberate call: hover is transient and post-intent. axe only tests
+   the resting state, so this won't show up in automated runs. If you ever
+   need hover to pass too, move each rest value one step darker.
+
+   COLOR-MIX SPACE
+   Use `in oklch` when at least one endpoint has chroma. Use `in oklab` when
+   BOTH are achromatic (white + transparent): oklch has a hue channel that
+   resolves to `none` for achromatic pairs, and axe-core cannot parse it —
+   it reports the element Inconclusive instead of testing it. Oklab is the
+   same space in rectangular coordinates, so there is no hue to be undefined.
    ========================================================================== */
 
 :root {
     /* SURFACE — BASE */
-    --sem-surface:                     var(--color-gray-50);
-    --sem-surface-raised:              var(--color-white);
-    --sem-surface-raised-hover:        var(--color-gray-50);
-    --sem-surface-sunken:              var(--color-gray-200);
-    --sem-surface-overlay:             color-mix(in oklab, var(--color-gray-950) 60%, transparent);
+    --sem-surface:                      var(--color-gray-50);
+    --sem-surface-raised:               var(--color-white);
+    --sem-surface-raised-hover:         var(--color-gray-50);
+    --sem-surface-sunken:               var(--color-gray-200);
+    --sem-surface-overlay:              color-mix(in oklab, var(--color-gray-950) 60%, transparent);
 
     /* Translucent surface for secondary controls. Opaque in light, alpha in
        dark so it picks up whatever sits behind it. */
-    --sem-surface-ghost:               var(--color-white);
-    --sem-surface-ghost-hover:         var(--color-gray-50);
+    --sem-surface-ghost:                var(--color-white);
+    --sem-surface-ghost-hover:          var(--color-gray-50);
+    --sem-surface-ghost-active:         var(--color-gray-100);
 
-    /* SURFACE — SOLID
-       One step darker in light than dark, so white content clears on both.
-       Hover goes LIGHTER in both modes. */
-    --sem-surface-brand:               var(--color-indigo-600);
-    --sem-surface-brand-hover:         var(--color-indigo-500);
-    --sem-surface-accent:              var(--color-coral-600);
-    --sem-surface-accent-hover:        var(--color-coral-500);
-    --sem-surface-info:                var(--color-blue-600);
-    --sem-surface-info-hover:          var(--color-blue-500);
-    --sem-surface-success:             var(--color-green-600);
-    --sem-surface-success-hover:       var(--color-green-500);
-    --sem-surface-warning:             var(--color-amber-600);
-    --sem-surface-warning-hover:       var(--color-amber-500);
-    --sem-surface-danger:              var(--color-red-600);
-    --sem-surface-danger-hover:        var(--color-red-500);
-    --sem-surface-neutral:             var(--color-gray-600);
-    --sem-surface-neutral-hover:       var(--color-gray-500);
+    /* SURFACE — SOLID: rest */
+    --sem-surface-brand:                var(--color-indigo-600);   /* 6.46:1 */
+    --sem-surface-accent:               var(--color-coral-650);    /* 4.54:1 */
+    --sem-surface-info:                 var(--color-blue-600);     /* 5.25:1 */
+    --sem-surface-success:              var(--color-green-700);    /* 4.95:1 */
+    --sem-surface-warning:              var(--color-amber-700);    /* 5.03:1 */
+    --sem-surface-danger:               var(--color-red-600);      /* 4.77:1 */
+    --sem-surface-neutral:              var(--color-gray-600);     /* 7.56:1 */
 
-    /* SURFACE — SOFT (interactive tint) */
-    --sem-surface-brand-soft:          var(--color-indigo-50);
-    --sem-surface-brand-soft-hover:    var(--color-indigo-100);
-    --sem-surface-accent-soft:         var(--color-coral-50);
-    --sem-surface-accent-soft-hover:   var(--color-coral-100);
-    --sem-surface-info-soft:           var(--color-blue-50);
-    --sem-surface-info-soft-hover:     var(--color-blue-100);
-    --sem-surface-success-soft:        var(--color-green-50);
-    --sem-surface-success-soft-hover:  var(--color-green-100);
-    --sem-surface-warning-soft:        var(--color-amber-50);
-    --sem-surface-warning-soft-hover:  var(--color-amber-100);
-    --sem-surface-danger-soft:         var(--color-red-50);
-    --sem-surface-danger-soft-hover:   var(--color-red-100);
-    --sem-surface-neutral-soft:        var(--color-gray-50);
-    --sem-surface-neutral-soft-hover:  var(--color-gray-100);
+    /* SURFACE — SOLID: hover
+       These reference the BASE TOKEN, not a primitive, so the .dark override
+       of --sem-surface-brand flows through automatically. That is why there
+       are no hover declarations in the .dark block below — do not add any. */
+    --sem-surface-brand-hover:          color-mix(in oklch, var(--sem-surface-brand) 90%, white);
+    --sem-surface-accent-hover:         color-mix(in oklch, var(--sem-surface-accent) 90%, white);
+    --sem-surface-info-hover:           color-mix(in oklch, var(--sem-surface-info) 90%, white);
+    --sem-surface-success-hover:        color-mix(in oklch, var(--sem-surface-success) 90%, white);
+    --sem-surface-warning-hover:        color-mix(in oklch, var(--sem-surface-warning) 90%, white);
+    --sem-surface-danger-hover:         color-mix(in oklch, var(--sem-surface-danger) 90%, white);
+    --sem-surface-neutral-hover:        color-mix(in oklch, var(--sem-surface-neutral) 90%, white);
+
+    /* SURFACE — SOLID: active
+       A real ramp step rather than a black mix — mixing black desaturates and
+       the press reads as muddy. The ramp keeps chroma. */
+    --sem-surface-brand-active:         var(--color-indigo-700);
+    --sem-surface-accent-active:        var(--color-coral-800);
+    --sem-surface-info-active:          var(--color-blue-700);
+    --sem-surface-success-active:       var(--color-green-800);
+    --sem-surface-warning-active:       var(--color-amber-800);
+    --sem-surface-danger-active:        var(--color-red-700);
+    --sem-surface-neutral-active:       var(--color-gray-700);
+
+    /* SURFACE — SOFT (interactive tint)
+       Monotonic, not reversing: a tint has no "pressed" metaphor to preserve,
+       it just gets more saturated. Real steps here, not mixes — 10% white
+       into a 50-level tint would be imperceptible. */
+    --sem-surface-brand-soft:           var(--color-indigo-50);
+    --sem-surface-brand-soft-hover:     var(--color-indigo-100);
+    --sem-surface-brand-soft-active:    var(--color-indigo-200);
+    --sem-surface-accent-soft:          var(--color-coral-50);
+    --sem-surface-accent-soft-hover:    var(--color-coral-100);
+    --sem-surface-accent-soft-active:   var(--color-coral-200);
+    --sem-surface-info-soft:            var(--color-blue-50);
+    --sem-surface-info-soft-hover:      var(--color-blue-100);
+    --sem-surface-info-soft-active:     var(--color-blue-200);
+    --sem-surface-success-soft:         var(--color-green-50);
+    --sem-surface-success-soft-hover:   var(--color-green-100);
+    --sem-surface-success-soft-active:  var(--color-green-200);
+    --sem-surface-warning-soft:         var(--color-amber-50);
+    --sem-surface-warning-soft-hover:   var(--color-amber-100);
+    --sem-surface-warning-soft-active:  var(--color-amber-200);
+    --sem-surface-danger-soft:          var(--color-red-50);
+    --sem-surface-danger-soft-hover:    var(--color-red-100);
+    --sem-surface-danger-soft-active:   var(--color-red-200);
+    --sem-surface-neutral-soft:         var(--color-gray-50);
+    --sem-surface-neutral-soft-hover:   var(--color-gray-100);
+    --sem-surface-neutral-soft-active:  var(--color-gray-200);
 
     /* SURFACE — SUBTLE (static status background) */
-    --sem-surface-brand-subtle:        var(--color-indigo-100);
-    --sem-surface-accent-subtle:       var(--color-coral-100);
-    --sem-surface-info-subtle:         var(--color-blue-100);
-    --sem-surface-success-subtle:      var(--color-green-100);
-    --sem-surface-warning-subtle:      var(--color-amber-100);
-    --sem-surface-danger-subtle:       var(--color-red-100);
-    --sem-surface-neutral-subtle:      var(--color-gray-100);
+    --sem-surface-brand-subtle:         var(--color-indigo-100);
+    --sem-surface-accent-subtle:        var(--color-coral-100);
+    --sem-surface-info-subtle:          var(--color-blue-100);
+    --sem-surface-success-subtle:       var(--color-green-100);
+    --sem-surface-warning-subtle:       var(--color-amber-100);
+    --sem-surface-danger-subtle:        var(--color-red-100);
+    --sem-surface-neutral-subtle:       var(--color-gray-100);
 
     /* CONTENT */
-    --sem-content:                     var(--color-gray-950);
-    --sem-content-muted:               var(--color-gray-800);
-    --sem-content-subtle:              var(--color-gray-600);
+    --sem-content:                      var(--color-gray-950);
+    --sem-content-muted:                var(--color-gray-800);
+    --sem-content-subtle:               var(--color-gray-600);
 
     /* Base = 3:1 — icons, dots, large text, measured against --sem-surface.
-       Strong = 4.5:1 — small text, measured against the -soft and -subtle tints. */
-    --sem-content-brand:               var(--color-indigo-500);
-    --sem-content-brand-strong:        var(--color-indigo-700);
-    --sem-content-accent:              var(--color-coral-500);
-    --sem-content-accent-strong:       var(--color-coral-700);
-    --sem-content-info:                var(--color-blue-500);
-    --sem-content-info-strong:         var(--color-blue-700);
-    --sem-content-success:             var(--color-green-500);
-    --sem-content-success-strong:      var(--color-green-700);
-    --sem-content-warning:             var(--color-amber-500);
-    --sem-content-warning-strong:      var(--color-amber-800);
-    --sem-content-danger:              var(--color-red-500);
-    --sem-content-danger-strong:       var(--color-red-700);
-    --sem-content-neutral:             var(--color-gray-500);
-    --sem-content-neutral-strong:      var(--color-gray-700);
+       Strong = 4.5:1 — small text, measured against the -soft and -subtle
+       tints. Accent-strong stays on coral-700: it is the soft-button and
+       badge TEXT color, a different job from the solid fill at 650. */
+    --sem-content-brand:                var(--color-indigo-500);
+    --sem-content-brand-strong:         var(--color-indigo-700);
+    --sem-content-accent:               var(--color-coral-500);
+    --sem-content-accent-strong:        var(--color-coral-700);
+    --sem-content-info:                 var(--color-blue-500);
+    --sem-content-info-strong:          var(--color-blue-700);
+    --sem-content-success:              var(--color-green-500);
+    --sem-content-success-strong:       var(--color-green-700);
+    --sem-content-warning:              var(--color-amber-500);
+    --sem-content-warning-strong:       var(--color-amber-800);
+    --sem-content-danger:               var(--color-red-500);
+    --sem-content-danger-strong:        var(--color-red-700);
+    --sem-content-neutral:              var(--color-gray-500);
+    --sem-content-neutral-strong:       var(--color-gray-700);
 
     /* CONTENT — ON SOLID SURFACES
-       Paired with --sem-surface-{tone}. Verify each against the 600 (light)
-       and the 500 (dark) — success and warning are the ones that flip. */
-    --sem-content-on-brand:            var(--color-white);
-    --sem-content-on-accent:           var(--color-white);
-    --sem-content-on-info:             var(--color-white);
-    --sem-content-on-success:          var(--color-white);
-    --sem-content-on-warning:          var(--color-amber-950);
-    --sem-content-on-danger:           var(--color-white);
-    --sem-content-on-neutral:          var(--color-white);
+       Uniformly white, both modes. The solid ramp steps are chosen to make
+       that true rather than flipping text color per tone — a warning button
+       with black text beside a danger button with white text reads as two
+       different components. */
+    --sem-content-on-brand:             var(--color-white);
+    --sem-content-on-accent:            var(--color-white);
+    --sem-content-on-info:              var(--color-white);
+    --sem-content-on-success:           var(--color-white);
+    --sem-content-on-warning:           var(--color-white);
+    --sem-content-on-danger:            var(--color-white);
+    --sem-content-on-neutral:           var(--color-white);
 
     /* BORDERS */
-    --sem-border:                      var(--color-gray-300);
-    --sem-border-hover:                var(--color-gray-400);
-    --sem-border-strong:               var(--color-gray-500);
-    --sem-border-ghost:                var(--color-gray-300);
-    --sem-border-brand:                var(--color-indigo-300);
-    --sem-border-brand-strong:         var(--color-indigo-500);
-    --sem-border-accent:               var(--color-coral-300);
-    --sem-border-accent-strong:        var(--color-coral-500);
-    --sem-border-info:                 var(--color-blue-300);
-    --sem-border-info-strong:          var(--color-blue-500);
-    --sem-border-success:              var(--color-green-300);
-    --sem-border-success-strong:       var(--color-green-500);
-    --sem-border-warning:              var(--color-amber-300);
-    --sem-border-warning-strong:       var(--color-amber-500);
-    --sem-border-danger:               var(--color-red-300);
-    --sem-border-danger-strong:        var(--color-red-500);
-    --sem-border-neutral:              var(--color-gray-300);
-    --sem-border-neutral-strong:       var(--color-gray-500);
+    --sem-border:                       var(--color-gray-300);
+    --sem-border-hover:                 var(--color-gray-400);
+    --sem-border-strong:                var(--color-gray-500);
+    --sem-border-ghost:                 var(--color-gray-300);
+    --sem-border-brand:                 var(--color-indigo-300);
+    --sem-border-brand-strong:          var(--color-indigo-500);
+    --sem-border-accent:                var(--color-coral-300);
+    --sem-border-accent-strong:         var(--color-coral-500);
+    --sem-border-info:                  var(--color-blue-300);
+    --sem-border-info-strong:           var(--color-blue-500);
+    --sem-border-success:               var(--color-green-300);
+    --sem-border-success-strong:        var(--color-green-500);
+    --sem-border-warning:               var(--color-amber-300);
+    --sem-border-warning-strong:        var(--color-amber-500);
+    --sem-border-danger:                var(--color-red-300);
+    --sem-border-danger-strong:         var(--color-red-500);
+    --sem-border-neutral:               var(--color-gray-300);
+    --sem-border-neutral-strong:        var(--color-gray-500);
 
-    /* FOCUS RING — tracks --sem-surface-brand in both modes */
-    --sem-focus:                       var(--color-indigo-600);
+    /* FOCUS RING */
+    --sem-focus:                        var(--color-indigo-600);
 }
 
 
 /* ==========================================================================
    DARK MODE
    Only tokens that change are redeclared — everything else inherits.
+   NOTE: no -hover declarations here. Solid hovers are color-mix expressions
+   in :root that reference the base token, so they re-resolve on their own
+   against whatever the base computes to inside .dark.
    ========================================================================== */
 
 .dark {
     /* SURFACE — BASE */
-    --sem-surface:                     var(--color-gray-900);
-    --sem-surface-raised:               color-mix(in oklch, var(--color-gray-800) 50%, transparent);
-    --sem-surface-raised-hover:        var(--color-gray-700);
-    --sem-surface-sunken:              var(--color-gray-950);
-    --sem-surface-overlay:             color-mix(in oklab, var(--color-gray-950) 70%, transparent);
+    --sem-surface:                      var(--color-gray-900);
+    --sem-surface-raised:               var(--color-gray-800);
+    --sem-surface-raised-hover:         var(--color-gray-700);
+    --sem-surface-sunken:               var(--color-gray-950);
+    --sem-surface-overlay:              color-mix(in oklab, var(--color-gray-950) 70%, transparent);
 
-    --sem-surface-ghost:               color-mix(in oklch, var(--color-white) 10%, transparent);
-    --sem-surface-ghost-hover:         color-mix(in oklch, var(--color-white) 20%, transparent);
+    /* `in oklab`, NOT oklch — white and transparent are both achromatic, so
+       oklch emits a `none` hue that axe-core cannot parse. Same space, just
+       rectangular coordinates, so there is no hue channel to be undefined. */
+    --sem-surface-ghost:                color-mix(in oklab, var(--color-white) 10%, transparent);
+    --sem-surface-ghost-hover:          color-mix(in oklab, var(--color-white) 20%, transparent);
+    --sem-surface-ghost-active:         color-mix(in oklab, var(--color-white) 30%, transparent);
 
     /* SURFACE — SOLID
-       One step lighter than light mode. Hover still goes lighter. */
-    --sem-surface-brand:               var(--color-indigo-500);
-    --sem-surface-brand-hover:         var(--color-indigo-400);
-    --sem-surface-accent:              var(--color-coral-500);
-    --sem-surface-accent-hover:        var(--color-coral-400);
-    --sem-surface-info:                var(--color-blue-500);
-    --sem-surface-info-hover:          var(--color-blue-400);
-    --sem-surface-success:             var(--color-green-500);
-    --sem-surface-success-hover:       var(--color-green-400);
-    --sem-surface-warning:             var(--color-amber-500);
-    --sem-surface-warning-hover:       var(--color-amber-400);
-    --sem-surface-danger:              var(--color-red-500);
-    --sem-surface-danger-hover:        var(--color-red-400);
-    --sem-surface-neutral:             var(--color-gray-500);
-    --sem-surface-neutral-hover:       var(--color-gray-400);
+       Only brand and neutral shift. accent, info, success, warning and danger
+       are already at their contrast floor in :root and inherit unchanged —
+       going lighter here would put their labels under AA. */
+    --sem-surface-brand:                var(--color-indigo-500);   /* 4.58:1 */
+    --sem-surface-brand-active:         var(--color-indigo-600);
+    --sem-surface-neutral:              var(--color-gray-500);     /* 4.84:1 */
+    --sem-surface-neutral-active:       var(--color-gray-600);
 
     /* SURFACE — SOFT
        Alpha tints, so they read against whatever's behind them rather than
        assuming a fixed backdrop. Heavier than -subtle here, unlike light mode. */
-    --sem-surface-brand-soft:          color-mix(in oklch, var(--color-indigo-500) 20%, transparent);
-    --sem-surface-brand-soft-hover:    color-mix(in oklch, var(--color-indigo-500) 30%, transparent);
-    --sem-surface-accent-soft:         color-mix(in oklch, var(--color-coral-500) 20%, transparent);
-    --sem-surface-accent-soft-hover:   color-mix(in oklch, var(--color-coral-500) 30%, transparent);
-    --sem-surface-info-soft:           color-mix(in oklch, var(--color-blue-500) 20%, transparent);
-    --sem-surface-info-soft-hover:     color-mix(in oklch, var(--color-blue-500) 30%, transparent);
-    --sem-surface-success-soft:        color-mix(in oklch, var(--color-green-500) 20%, transparent);
-    --sem-surface-success-soft-hover:  color-mix(in oklch, var(--color-green-500) 30%, transparent);
-    --sem-surface-warning-soft:        color-mix(in oklch, var(--color-amber-500) 20%, transparent);
-    --sem-surface-warning-soft-hover:  color-mix(in oklch, var(--color-amber-500) 30%, transparent);
-    --sem-surface-danger-soft:         color-mix(in oklch, var(--color-red-500) 20%, transparent);
-    --sem-surface-danger-soft-hover:   color-mix(in oklch, var(--color-red-500) 30%, transparent);
-    --sem-surface-neutral-soft:        color-mix(in oklch, var(--color-gray-500) 20%, transparent);
-    --sem-surface-neutral-soft-hover:  color-mix(in oklch, var(--color-gray-500) 30%, transparent);
+    --sem-surface-brand-soft:           color-mix(in oklch, var(--color-indigo-500) 20%, transparent);
+    --sem-surface-brand-soft-hover:     color-mix(in oklch, var(--color-indigo-500) 30%, transparent);
+    --sem-surface-brand-soft-active:    color-mix(in oklch, var(--color-indigo-500) 40%, transparent);
+    --sem-surface-accent-soft:          color-mix(in oklch, var(--color-coral-500) 20%, transparent);
+    --sem-surface-accent-soft-hover:    color-mix(in oklch, var(--color-coral-500) 30%, transparent);
+    --sem-surface-accent-soft-active:   color-mix(in oklch, var(--color-coral-500) 40%, transparent);
+    --sem-surface-info-soft:            color-mix(in oklch, var(--color-blue-500) 20%, transparent);
+    --sem-surface-info-soft-hover:      color-mix(in oklch, var(--color-blue-500) 30%, transparent);
+    --sem-surface-info-soft-active:     color-mix(in oklch, var(--color-blue-500) 40%, transparent);
+    --sem-surface-success-soft:         color-mix(in oklch, var(--color-green-500) 20%, transparent);
+    --sem-surface-success-soft-hover:   color-mix(in oklch, var(--color-green-500) 30%, transparent);
+    --sem-surface-success-soft-active:  color-mix(in oklch, var(--color-green-500) 40%, transparent);
+    --sem-surface-warning-soft:         color-mix(in oklch, var(--color-amber-500) 20%, transparent);
+    --sem-surface-warning-soft-hover:   color-mix(in oklch, var(--color-amber-500) 30%, transparent);
+    --sem-surface-warning-soft-active:  color-mix(in oklch, var(--color-amber-500) 40%, transparent);
+    --sem-surface-danger-soft:          color-mix(in oklch, var(--color-red-500) 20%, transparent);
+    --sem-surface-danger-soft-hover:    color-mix(in oklch, var(--color-red-500) 30%, transparent);
+    --sem-surface-danger-soft-active:   color-mix(in oklch, var(--color-red-500) 40%, transparent);
+    --sem-surface-neutral-soft:         color-mix(in oklch, var(--color-gray-500) 20%, transparent);
+    --sem-surface-neutral-soft-hover:   color-mix(in oklch, var(--color-gray-500) 30%, transparent);
+    --sem-surface-neutral-soft-active:  color-mix(in oklch, var(--color-gray-500) 40%, transparent);
 
     /* SURFACE — SUBTLE */
-    --sem-surface-brand-subtle:        color-mix(in oklch, var(--color-indigo-400) 10%, transparent);
-    --sem-surface-accent-subtle:       color-mix(in oklch, var(--color-coral-400) 10%, transparent);
-    --sem-surface-info-subtle:         color-mix(in oklch, var(--color-blue-400) 10%, transparent);
-    --sem-surface-success-subtle:      color-mix(in oklch, var(--color-green-400) 10%, transparent);
-    --sem-surface-warning-subtle:      color-mix(in oklch, var(--color-amber-400) 10%, transparent);
-    --sem-surface-danger-subtle:       color-mix(in oklch, var(--color-red-400) 10%, transparent);
-    --sem-surface-neutral-subtle:      color-mix(in oklch, var(--color-gray-400) 10%, transparent);
+    --sem-surface-brand-subtle:         color-mix(in oklch, var(--color-indigo-400) 10%, transparent);
+    --sem-surface-accent-subtle:        color-mix(in oklch, var(--color-coral-400) 10%, transparent);
+    --sem-surface-info-subtle:          color-mix(in oklch, var(--color-blue-400) 10%, transparent);
+    --sem-surface-success-subtle:       color-mix(in oklch, var(--color-green-400) 10%, transparent);
+    --sem-surface-warning-subtle:       color-mix(in oklch, var(--color-amber-400) 10%, transparent);
+    --sem-surface-danger-subtle:        color-mix(in oklch, var(--color-red-400) 10%, transparent);
+    --sem-surface-neutral-subtle:       color-mix(in oklch, var(--color-gray-400) 10%, transparent);
 
     /* CONTENT */
-    --sem-content:                     var(--color-gray-50);
-    --sem-content-muted:               var(--color-gray-200);
-    --sem-content-subtle:              var(--color-gray-400);
+    --sem-content:                      var(--color-gray-50);
+    --sem-content-muted:                var(--color-gray-200);
+    --sem-content-subtle:               var(--color-gray-400);
 
     /* Strong gets LIGHTER here, not darker. Same meaning, opposite step. */
-    --sem-content-brand:               var(--color-indigo-400);
-    --sem-content-brand-strong:        var(--color-indigo-300);
-    --sem-content-accent:              var(--color-coral-400);
-    --sem-content-accent-strong:       var(--color-coral-300);
-    --sem-content-info:                var(--color-blue-400);
-    --sem-content-info-strong:         var(--color-blue-300);
-    --sem-content-success:             var(--color-green-400);
-    --sem-content-success-strong:      var(--color-green-300);
-    --sem-content-warning:             var(--color-amber-400);
-    --sem-content-warning-strong:      var(--color-amber-300);
-    --sem-content-danger:              var(--color-red-400);
-    --sem-content-danger-strong:       var(--color-red-300);
-    --sem-content-neutral:             var(--color-gray-400);
-    --sem-content-neutral-strong:      var(--color-gray-300);
+    --sem-content-brand:                var(--color-indigo-400);
+    --sem-content-brand-strong:         var(--color-indigo-300);
+    --sem-content-accent:               var(--color-coral-400);
+    --sem-content-accent-strong:        var(--color-coral-300);
+    --sem-content-info:                 var(--color-blue-400);
+    --sem-content-info-strong:          var(--color-blue-300);
+    --sem-content-success:              var(--color-green-400);
+    --sem-content-success-strong:       var(--color-green-300);
+    --sem-content-warning:              var(--color-amber-400);
+    --sem-content-warning-strong:       var(--color-amber-300);
+    --sem-content-danger:               var(--color-red-400);
+    --sem-content-danger-strong:        var(--color-red-300);
+    --sem-content-neutral:              var(--color-gray-400);
+    --sem-content-neutral-strong:       var(--color-gray-300);
 
     /* CONTENT — ON SOLID SURFACES
-       Solid drops from 600 to 500 here, so success flips back to dark text. */
-    --sem-content-on-success:          var(--color-green-950);
+       Not overridden. White everywhere, both modes — see the :root note. */
 
     /* BORDERS */
-    --sem-border:                      var(--color-gray-700);
-    --sem-border-hover:                var(--color-gray-600);
-    --sem-border-strong:               var(--color-gray-500);
-    --sem-border-ghost:                color-mix(in oklch, var(--color-white) 10%, transparent);
-    --sem-border-brand:                var(--color-indigo-800);
-    --sem-border-brand-strong:         var(--color-indigo-400);
-    --sem-border-accent:               var(--color-coral-800);
-    --sem-border-accent-strong:        var(--color-coral-400);
-    --sem-border-info:                 var(--color-blue-800);
-    --sem-border-info-strong:          var(--color-blue-400);
-    --sem-border-success:              var(--color-green-800);
-    --sem-border-success-strong:       var(--color-green-400);
-    --sem-border-warning:              var(--color-amber-800);
-    --sem-border-warning-strong:       var(--color-amber-400);
-    --sem-border-danger:               var(--color-red-800);
-    --sem-border-danger-strong:        var(--color-red-400);
-    --sem-border-neutral:              var(--color-gray-700);
-    --sem-border-neutral-strong:       var(--color-gray-500);
+    --sem-border:                       var(--color-gray-700);
+    --sem-border-hover:                 var(--color-gray-600);
+    --sem-border-strong:                var(--color-gray-500);
+    --sem-border-ghost:                 color-mix(in oklab, var(--color-white) 15%, transparent);
+    --sem-border-brand:                 var(--color-indigo-800);
+    --sem-border-brand-strong:          var(--color-indigo-400);
+    --sem-border-accent:                var(--color-coral-800);
+    --sem-border-accent-strong:         var(--color-coral-400);
+    --sem-border-info:                  var(--color-blue-800);
+    --sem-border-info-strong:           var(--color-blue-400);
+    --sem-border-success:               var(--color-green-800);
+    --sem-border-success-strong:        var(--color-green-400);
+    --sem-border-warning:               var(--color-amber-800);
+    --sem-border-warning-strong:        var(--color-amber-400);
+    --sem-border-danger:                var(--color-red-800);
+    --sem-border-danger-strong:         var(--color-red-400);
+    --sem-border-neutral:               var(--color-gray-700);
+    --sem-border-neutral-strong:        var(--color-gray-500);
 
     /* FOCUS RING */
-    --sem-focus:                       var(--color-indigo-500);
+    --sem-focus:                        var(--color-indigo-500);
 }
 
 
@@ -240,104 +300,119 @@
 
 @theme inline {
     /* SURFACE */
-    --color-surface:                     var(--sem-surface);
-    --color-surface-raised:              var(--sem-surface-raised);
-    --color-surface-raised-hover:        var(--sem-surface-raised-hover);
-    --color-surface-sunken:              var(--sem-surface-sunken);
-    --color-surface-overlay:             var(--sem-surface-overlay);
-    --color-surface-ghost:               var(--sem-surface-ghost);
-    --color-surface-ghost-hover:         var(--sem-surface-ghost-hover);
+    --color-surface:                      var(--sem-surface);
+    --color-surface-raised:               var(--sem-surface-raised);
+    --color-surface-raised-hover:         var(--sem-surface-raised-hover);
+    --color-surface-sunken:               var(--sem-surface-sunken);
+    --color-surface-overlay:              var(--sem-surface-overlay);
+    --color-surface-ghost:                var(--sem-surface-ghost);
+    --color-surface-ghost-hover:          var(--sem-surface-ghost-hover);
+    --color-surface-ghost-active:         var(--sem-surface-ghost-active);
 
-    --color-surface-brand:               var(--sem-surface-brand);
-    --color-surface-brand-hover:         var(--sem-surface-brand-hover);
-    --color-surface-brand-soft:          var(--sem-surface-brand-soft);
-    --color-surface-brand-soft-hover:    var(--sem-surface-brand-soft-hover);
-    --color-surface-brand-subtle:        var(--sem-surface-brand-subtle);
+    --color-surface-brand:                var(--sem-surface-brand);
+    --color-surface-brand-hover:          var(--sem-surface-brand-hover);
+    --color-surface-brand-active:         var(--sem-surface-brand-active);
+    --color-surface-brand-soft:           var(--sem-surface-brand-soft);
+    --color-surface-brand-soft-hover:     var(--sem-surface-brand-soft-hover);
+    --color-surface-brand-soft-active:    var(--sem-surface-brand-soft-active);
+    --color-surface-brand-subtle:         var(--sem-surface-brand-subtle);
 
-    --color-surface-accent:              var(--sem-surface-accent);
-    --color-surface-accent-hover:        var(--sem-surface-accent-hover);
-    --color-surface-accent-soft:         var(--sem-surface-accent-soft);
-    --color-surface-accent-soft-hover:   var(--sem-surface-accent-soft-hover);
-    --color-surface-accent-subtle:       var(--sem-surface-accent-subtle);
+    --color-surface-accent:               var(--sem-surface-accent);
+    --color-surface-accent-hover:         var(--sem-surface-accent-hover);
+    --color-surface-accent-active:        var(--sem-surface-accent-active);
+    --color-surface-accent-soft:          var(--sem-surface-accent-soft);
+    --color-surface-accent-soft-hover:    var(--sem-surface-accent-soft-hover);
+    --color-surface-accent-soft-active:   var(--sem-surface-accent-soft-active);
+    --color-surface-accent-subtle:        var(--sem-surface-accent-subtle);
 
-    --color-surface-info:                var(--sem-surface-info);
-    --color-surface-info-hover:          var(--sem-surface-info-hover);
-    --color-surface-info-soft:           var(--sem-surface-info-soft);
-    --color-surface-info-soft-hover:     var(--sem-surface-info-soft-hover);
-    --color-surface-info-subtle:         var(--sem-surface-info-subtle);
+    --color-surface-info:                 var(--sem-surface-info);
+    --color-surface-info-hover:           var(--sem-surface-info-hover);
+    --color-surface-info-active:          var(--sem-surface-info-active);
+    --color-surface-info-soft:            var(--sem-surface-info-soft);
+    --color-surface-info-soft-hover:      var(--sem-surface-info-soft-hover);
+    --color-surface-info-soft-active:     var(--sem-surface-info-soft-active);
+    --color-surface-info-subtle:          var(--sem-surface-info-subtle);
 
-    --color-surface-success:             var(--sem-surface-success);
-    --color-surface-success-hover:       var(--sem-surface-success-hover);
-    --color-surface-success-soft:        var(--sem-surface-success-soft);
-    --color-surface-success-soft-hover:  var(--sem-surface-success-soft-hover);
-    --color-surface-success-subtle:      var(--sem-surface-success-subtle);
+    --color-surface-success:              var(--sem-surface-success);
+    --color-surface-success-hover:        var(--sem-surface-success-hover);
+    --color-surface-success-active:       var(--sem-surface-success-active);
+    --color-surface-success-soft:         var(--sem-surface-success-soft);
+    --color-surface-success-soft-hover:   var(--sem-surface-success-soft-hover);
+    --color-surface-success-soft-active:  var(--sem-surface-success-soft-active);
+    --color-surface-success-subtle:       var(--sem-surface-success-subtle);
 
-    --color-surface-warning:             var(--sem-surface-warning);
-    --color-surface-warning-hover:       var(--sem-surface-warning-hover);
-    --color-surface-warning-soft:        var(--sem-surface-warning-soft);
-    --color-surface-warning-soft-hover:  var(--sem-surface-warning-soft-hover);
-    --color-surface-warning-subtle:      var(--sem-surface-warning-subtle);
+    --color-surface-warning:              var(--sem-surface-warning);
+    --color-surface-warning-hover:        var(--sem-surface-warning-hover);
+    --color-surface-warning-active:       var(--sem-surface-warning-active);
+    --color-surface-warning-soft:         var(--sem-surface-warning-soft);
+    --color-surface-warning-soft-hover:   var(--sem-surface-warning-soft-hover);
+    --color-surface-warning-soft-active:  var(--sem-surface-warning-soft-active);
+    --color-surface-warning-subtle:       var(--sem-surface-warning-subtle);
 
-    --color-surface-danger:              var(--sem-surface-danger);
-    --color-surface-danger-hover:        var(--sem-surface-danger-hover);
-    --color-surface-danger-soft:         var(--sem-surface-danger-soft);
-    --color-surface-danger-soft-hover:   var(--sem-surface-danger-soft-hover);
-    --color-surface-danger-subtle:       var(--sem-surface-danger-subtle);
+    --color-surface-danger:               var(--sem-surface-danger);
+    --color-surface-danger-hover:         var(--sem-surface-danger-hover);
+    --color-surface-danger-active:        var(--sem-surface-danger-active);
+    --color-surface-danger-soft:          var(--sem-surface-danger-soft);
+    --color-surface-danger-soft-hover:    var(--sem-surface-danger-soft-hover);
+    --color-surface-danger-soft-active:   var(--sem-surface-danger-soft-active);
+    --color-surface-danger-subtle:        var(--sem-surface-danger-subtle);
 
-    --color-surface-neutral:             var(--sem-surface-neutral);
-    --color-surface-neutral-hover:       var(--sem-surface-neutral-hover);
-    --color-surface-neutral-soft:        var(--sem-surface-neutral-soft);
-    --color-surface-neutral-soft-hover:  var(--sem-surface-neutral-soft-hover);
-    --color-surface-neutral-subtle:      var(--sem-surface-neutral-subtle);
+    --color-surface-neutral:              var(--sem-surface-neutral);
+    --color-surface-neutral-hover:        var(--sem-surface-neutral-hover);
+    --color-surface-neutral-active:       var(--sem-surface-neutral-active);
+    --color-surface-neutral-soft:         var(--sem-surface-neutral-soft);
+    --color-surface-neutral-soft-hover:   var(--sem-surface-neutral-soft-hover);
+    --color-surface-neutral-soft-active:  var(--sem-surface-neutral-soft-active);
+    --color-surface-neutral-subtle:       var(--sem-surface-neutral-subtle);
 
     /* CONTENT */
-    --color-content:                     var(--sem-content);
-    --color-content-muted:               var(--sem-content-muted);
-    --color-content-subtle:              var(--sem-content-subtle);
+    --color-content:                      var(--sem-content);
+    --color-content-muted:                var(--sem-content-muted);
+    --color-content-subtle:               var(--sem-content-subtle);
 
-    --color-content-brand:               var(--sem-content-brand);
-    --color-content-brand-strong:        var(--sem-content-brand-strong);
-    --color-content-accent:              var(--sem-content-accent);
-    --color-content-accent-strong:       var(--sem-content-accent-strong);
-    --color-content-info:                var(--sem-content-info);
-    --color-content-info-strong:         var(--sem-content-info-strong);
-    --color-content-success:             var(--sem-content-success);
-    --color-content-success-strong:      var(--sem-content-success-strong);
-    --color-content-warning:             var(--sem-content-warning);
-    --color-content-warning-strong:      var(--sem-content-warning-strong);
-    --color-content-danger:              var(--sem-content-danger);
-    --color-content-danger-strong:       var(--sem-content-danger-strong);
-    --color-content-neutral:             var(--sem-content-neutral);
-    --color-content-neutral-strong:      var(--sem-content-neutral-strong);
+    --color-content-brand:                var(--sem-content-brand);
+    --color-content-brand-strong:         var(--sem-content-brand-strong);
+    --color-content-accent:               var(--sem-content-accent);
+    --color-content-accent-strong:        var(--sem-content-accent-strong);
+    --color-content-info:                 var(--sem-content-info);
+    --color-content-info-strong:          var(--sem-content-info-strong);
+    --color-content-success:              var(--sem-content-success);
+    --color-content-success-strong:       var(--sem-content-success-strong);
+    --color-content-warning:              var(--sem-content-warning);
+    --color-content-warning-strong:       var(--sem-content-warning-strong);
+    --color-content-danger:               var(--sem-content-danger);
+    --color-content-danger-strong:        var(--sem-content-danger-strong);
+    --color-content-neutral:              var(--sem-content-neutral);
+    --color-content-neutral-strong:       var(--sem-content-neutral-strong);
 
-    --color-content-on-brand:            var(--sem-content-on-brand);
-    --color-content-on-accent:           var(--sem-content-on-accent);
-    --color-content-on-info:             var(--sem-content-on-info);
-    --color-content-on-success:          var(--sem-content-on-success);
-    --color-content-on-warning:          var(--sem-content-on-warning);
-    --color-content-on-danger:           var(--sem-content-on-danger);
-    --color-content-on-neutral:          var(--sem-content-on-neutral);
+    --color-content-on-brand:             var(--sem-content-on-brand);
+    --color-content-on-accent:            var(--sem-content-on-accent);
+    --color-content-on-info:              var(--sem-content-on-info);
+    --color-content-on-success:           var(--sem-content-on-success);
+    --color-content-on-warning:           var(--sem-content-on-warning);
+    --color-content-on-danger:            var(--sem-content-on-danger);
+    --color-content-on-neutral:           var(--sem-content-on-neutral);
 
     /* BORDERS */
-    --color-border:                      var(--sem-border);
-    --color-border-hover:                var(--sem-border-hover);
-    --color-border-strong:               var(--sem-border-strong);
-    --color-border-ghost:                var(--sem-border-ghost);
-    --color-border-brand:                var(--sem-border-brand);
-    --color-border-brand-strong:         var(--sem-border-brand-strong);
-    --color-border-accent:               var(--sem-border-accent);
-    --color-border-accent-strong:        var(--sem-border-accent-strong);
-    --color-border-info:                 var(--sem-border-info);
-    --color-border-info-strong:          var(--sem-border-info-strong);
-    --color-border-success:              var(--sem-border-success);
-    --color-border-success-strong:       var(--sem-border-success-strong);
-    --color-border-warning:              var(--sem-border-warning);
-    --color-border-warning-strong:       var(--sem-border-warning-strong);
-    --color-border-danger:               var(--sem-border-danger);
-    --color-border-danger-strong:        var(--sem-border-danger-strong);
-    --color-border-neutral:              var(--sem-border-neutral);
-    --color-border-neutral-strong:       var(--sem-border-neutral-strong);
+    --color-border:                       var(--sem-border);
+    --color-border-hover:                 var(--sem-border-hover);
+    --color-border-strong:                var(--sem-border-strong);
+    --color-border-ghost:                 var(--sem-border-ghost);
+    --color-border-brand:                 var(--sem-border-brand);
+    --color-border-brand-strong:          var(--sem-border-brand-strong);
+    --color-border-accent:                var(--sem-border-accent);
+    --color-border-accent-strong:         var(--sem-border-accent-strong);
+    --color-border-info:                  var(--sem-border-info);
+    --color-border-info-strong:           var(--sem-border-info-strong);
+    --color-border-success:               var(--sem-border-success);
+    --color-border-success-strong:        var(--sem-border-success-strong);
+    --color-border-warning:               var(--sem-border-warning);
+    --color-border-warning-strong:        var(--sem-border-warning-strong);
+    --color-border-danger:                var(--sem-border-danger);
+    --color-border-danger-strong:         var(--sem-border-danger-strong);
+    --color-border-neutral:               var(--sem-border-neutral);
+    --color-border-neutral-strong:        var(--sem-border-neutral-strong);
 
     /* FOCUS RING */
-    --color-focus:                       var(--sem-focus);
+    --color-focus:                        var(--sem-focus);
 }

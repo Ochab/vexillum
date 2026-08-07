@@ -46,14 +46,14 @@
         --tone-border:             var(--sem-border-accent-strong);
     }
 
-    .btn[data-tone='info'] {
-        --tone-surface:            var(--sem-surface-info);
-        --tone-surface-hover:      var(--sem-surface-info-hover);
-        --tone-surface-soft:       var(--sem-surface-info-soft);
-        --tone-surface-soft-hover: var(--sem-surface-info-soft-hover);
-        --tone-on:                 var(--sem-content-on-info);
-        --tone-content:            var(--sem-content-info-strong);
-        --tone-border:             var(--sem-border-info-strong);
+    .btn[data-tone='neutral'] {
+        --tone-surface:            var(--sem-surface-neutral);
+        --tone-surface-hover:      var(--sem-surface-neutral-hover);
+        --tone-surface-soft:       var(--sem-surface-neutral-soft);
+        --tone-surface-soft-hover: var(--sem-surface-neutral-soft-hover);
+        --tone-on:                 var(--sem-content-on-neutral);
+        --tone-content:            var(--sem-content-neutral-strong);
+        --tone-border:             var(--sem-border-neutral-strong);
     }
 
     .btn[data-tone='success'] {
@@ -66,16 +66,6 @@
         --tone-border:             var(--sem-border-success-strong);
     }
 
-    .btn[data-tone='warning'] {
-        --tone-surface:            var(--sem-surface-warning);
-        --tone-surface-hover:      var(--sem-surface-warning-hover);
-        --tone-surface-soft:       var(--sem-surface-warning-soft);
-        --tone-surface-soft-hover: var(--sem-surface-warning-soft-hover);
-        --tone-on:                 var(--sem-content-on-warning);
-        --tone-content:            var(--sem-content-warning-strong);
-        --tone-border:             var(--sem-border-warning-strong);
-    }
-
     .btn[data-tone='danger'] {
         --tone-surface:            var(--sem-surface-danger);
         --tone-surface-hover:      var(--sem-surface-danger-hover);
@@ -86,15 +76,6 @@
         --tone-border:             var(--sem-border-danger-strong);
     }
 
-    .btn[data-tone='neutral'] {
-        --tone-surface:            var(--sem-surface-neutral);
-        --tone-surface-hover:      var(--sem-surface-neutral-hover);
-        --tone-surface-soft:       var(--sem-surface-neutral-soft);
-        --tone-surface-soft-hover: var(--sem-surface-neutral-soft-hover);
-        --tone-on:                 var(--sem-content-on-neutral);
-        --tone-content:            var(--sem-content-neutral-strong);
-        --tone-border:             var(--sem-border-neutral-strong);
-    }
 
     /* ----------------------------------------------------------------------
        BUTTON — VARIANT
